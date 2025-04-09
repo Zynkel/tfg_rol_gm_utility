@@ -1,0 +1,30 @@
+[Ll]ibrary
+[Tt]emp
+[Bb]uild
+[Bb]uilds
+[Ll]ogs
+[Oo]bj
+[Mm]emoryCaptures
+UserSettings
+
+# Archivos del sistema
+.DS_Store
+.swp
+
+# Visual Studio
+.vscode
+.csproj
+.unityproj
+.sln
+.suo
+.tmp
+.user
+.userprefs
+.pidb
+.booproj
+.svd
+.pdb
+.mdb
+
+# Paquetes externos descargados por Unity
+Packagescom.unity.
