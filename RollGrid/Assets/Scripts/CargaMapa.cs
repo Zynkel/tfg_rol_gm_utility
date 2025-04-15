@@ -6,10 +6,11 @@ public class CargaMapa : MonoBehaviour
 {
     public RawImage mapaVisor;
 
-    public string rutaMapa = "map.png";
-    // Método Start: Se ejecuta una vez cuando el objeto está activo, similar a un constructor "inicializado" en Java o un método que llamas al inicio en Python.
-    void Start()
+    public void CargarMapa()
     {
+        string rutaRelativa = "Maps/map.png";
+        string rutaMapa = Path.Combine(Application.dataPath, rutaRelativa);
+
         if(File.Exists(rutaMapa))
         {
             byte[] datosMapa = File.ReadAllBytes(rutaMapa);
@@ -29,9 +30,4 @@ public class CargaMapa : MonoBehaviour
         }
     }
 
-    // Método Update: Se ejecuta en cada frame (similar al bucle principal, pero Unity lo gestiona de forma automatizada).
-    private void Update()
-    {
-        
-    }
 }
