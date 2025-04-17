@@ -1,3 +1,63 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+*.sqlite3
+
+# --- FastAPI / Uvicorn ---
+*.log
+*.db
+instance/
+.webassets-cache
+*.pid
+
+# --- Dependencias ---
+*.bak
+pip-wheel-metadata/
+*.dist-info/
+
+# --- MongoDB  ---
+data/maps/
+
+# --- 🧠 Modelos de IA ---
+model/*.tflite
+model/*.h5
+
+# ---  Archivos de prueba ---
+test_outputs/
+*.test.json
+
+# ---  Unity  ---
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+UserSettings/
+*.csproj
+*.unityproj
+*.sln
+
+# --- 💻 Sistema operativo ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Git ---
+*.orig
+*.rej
+
+# --- Archivos específicos previos ---
 map.png
 Lista referencias para TFG.docx
 DungeonMapDoodle.png
