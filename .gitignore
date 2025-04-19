@@ -48,10 +48,34 @@ UserSettings/
 *.unityproj
 *.sln
 
+# Paquetes externos descargados por Unity
+Packagescom.unity.
+
+# Visual Studio
+.vscode
+.csproj
+.unityproj
+.sln
+.suo
+.tmp
+.user
+.userprefs
+.pidb
+.booproj
+.svd
+.pdb
+.mdb
+.vs/
+*.vsidx
+*.suo
+*.user
+*.userprefs
+
 # --- 💻 Sistema operativo ---
 .DS_Store
 Thumbs.db
 desktop.ini
+.swp
 
 # --- Git ---
 *.orig
