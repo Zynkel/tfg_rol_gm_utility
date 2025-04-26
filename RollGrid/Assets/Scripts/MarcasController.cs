@@ -7,7 +7,7 @@ public class MarcasController : MonoBehaviour, IDragHandler, IBeginDragHandler
     public CanvasGroup ventanaCanvasGroup;
     public Image imagenBoton;
 
-    private RectTransform panelRectTransform;
+    private RectTransform panelMarcas;
     private Vector2 offset;
     private Color defaultColor = new Color32(0x1F, 0x1F, 0x1F, 0xFF); //1F1F1F
     private Color pressedColor = new Color32(0x3F, 0x3F, 0x3F, 0xFF); //3F3F3F
@@ -17,17 +17,16 @@ public class MarcasController : MonoBehaviour, IDragHandler, IBeginDragHandler
         // Se oculta el panel, el botón aparece sin pulsar.
         if (ventanaCanvasGroup.alpha == 1f)
         {
-            imagenBoton.color = defaultColor;
             OcultarPanel();
         } else // Se activa el panel, el botón se muestra presionado.
         {
-            imagenBoton.color = pressedColor;
             MostrarPanel();
         }
     }
 
     public void MostrarPanel()
     {
+        imagenBoton.color = pressedColor;
         ventanaCanvasGroup.alpha = 1f;
         ventanaCanvasGroup.interactable = true;
         ventanaCanvasGroup.blocksRaycasts = true;
@@ -35,6 +34,7 @@ public class MarcasController : MonoBehaviour, IDragHandler, IBeginDragHandler
 
     public void OcultarPanel()
     {
+        imagenBoton.color = defaultColor;
         ventanaCanvasGroup.alpha = 0f;
         ventanaCanvasGroup.interactable = false;
         ventanaCanvasGroup.blocksRaycasts = false;
@@ -43,14 +43,14 @@ public class MarcasController : MonoBehaviour, IDragHandler, IBeginDragHandler
     //En Awake, guardamos la referencia al RectTransform del panel. Esto se hace una vez al iniciar.
     void Awake()
     {
-        panelRectTransform = GetComponent<RectTransform>();
+        panelMarcas = GetComponent<RectTransform>();
     }
 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            panelRectTransform,
+            panelMarcas,
             eventData.position,
             eventData.pressEventCamera,
             out offset
@@ -61,12 +61,12 @@ public class MarcasController : MonoBehaviour, IDragHandler, IBeginDragHandler
     {
         Vector2 localMousePosition;
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            panelRectTransform.parent as RectTransform,
+            panelMarcas.parent as RectTransform,
             eventData.position,
             eventData.pressEventCamera,
             out localMousePosition))
         {
-            panelRectTransform.localPosition = localMousePosition - offset;
+            panelMarcas.localPosition = localMousePosition - offset;
         }
     }
 }

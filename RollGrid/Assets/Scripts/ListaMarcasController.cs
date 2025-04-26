@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ListaMarcasUI : MonoBehaviour
@@ -9,6 +10,7 @@ public class ListaMarcasUI : MonoBehaviour
     {
         public string nombre;
         public Sprite icono;
+        public GameObject prefabMarca; // Prefab que se creará al arrastrar
 
         public Marca(string nombre, Sprite icono)
         {
@@ -53,7 +55,6 @@ public class ListaMarcasUI : MonoBehaviour
 
     void SeleccionarMarca(MarcaItemUI marca)
     {
-        Debug.Log("Recibo evento y seleccionarMarca: " + marcaSeleccionada);
         if (marcaSeleccionada != null)
             marcaSeleccionada.Desmarcar();
 
