@@ -64,4 +64,9 @@ public class MarcaItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         canvasGroup.blocksRaycasts = true;
         transform.localPosition = Vector3.zero;
     }
+
+    public string GetTextoMarca()
+    {
+        return texto.text;
+    }
 }

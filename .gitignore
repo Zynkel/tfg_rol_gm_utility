@@ -65,7 +65,7 @@ Packagescom.unity.
 .svd
 .pdb
 .mdb
-.vs/
+*.vs/
 *.vsidx
 *.suo
 *.user
@@ -78,10 +78,14 @@ desktop.ini
 .swp
 
 # --- Git ---
-*.orig
+*.orig 
 *.rej
 
 # --- Archivos específicos previos ---
 map.png
 Lista referencias para TFG.docx
 DungeonMapDoodle.png
+
+RollGrid/.vs/RollGrid/v17/DocumentLayout.json
+RollGrid/.vs/RollGrid/v17/DocumentLayout.backup.json
+*.vsidx
