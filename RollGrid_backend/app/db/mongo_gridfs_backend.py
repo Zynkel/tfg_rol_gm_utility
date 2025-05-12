@@ -1,46 +1,41 @@
 from pymongo import MongoClient
 import gridfs
 import os
-import json
 
-# Configuración de la base de datos
+# Conexión a MongoDB
 client = MongoClient("mongodb://localhost:27017/")
 db = client["rollgrid_db"]
 fs = gridfs.GridFS(db)
-coleccion_json = db["imagenes_json"]
 
-def guardar_imagen_y_json(nombre_imagen: str, ruta_imagen: str, datos_json: dict):
+def guardar_imagen_y_json(nombre_imagen, ruta_imagen, datos_json):
     with open(ruta_imagen, "rb") as f:
         imagen_id = fs.put(f, filename=nombre_imagen, content_type="image/jpeg")
 
-    entrada = {
+    db["imagenes_json"].insert_one({
         "nombre": nombre_imagen,
         "imagen_id": imagen_id,
         "datos": datos_json
-    }
+    })
 
-    coleccion_json.insert_one(entrada)
-    print(f"Imagen '{nombre_imagen}' y JSON asociado guardados en MongoDB.")
+    return imagen_id
 
-def recuperar_imagen(nombre: str, ruta_destino: str) -> bool:
-    entrada = coleccion_json.find_one({"nombre": nombre})
-    if not entrada:
-        return False
-
-    imagen_id = entrada["imagen_id"]
-    try:
-        with open(ruta_destino, "wb") as f:
-            f.write(fs.get(imagen_id).read())
-        return True
-    except Exception as e:
-        print(f"Error al recuperar imagen '{nombre}': {e}")
-        return False
-
-def obtener_datos_json(nombre: str):
-    entrada = coleccion_json.find_one({"nombre": nombre})
+def recuperar_imagen(nombre_imagen, ruta_salida):
+    entrada = db["imagenes_json"].find_one({"nombre": nombre_imagen})
     if not entrada:
         return None
-    return entrada.get("datos", {})
+
+    imagen_binaria = fs.get(entrada["imagen_id"]).read()
+
+    os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
+    with open(ruta_salida, "wb") as f:
+        f.write(imagen_binaria)
+
+    return ruta_salida
+
+def obtener_datos_json(nombre_imagen):
+    entrada = db["imagenes_json"].find_one({"nombre": nombre_imagen}, {"_id": 0, "datos": 1})
+    return entrada["datos"] if entrada else None
 
 def listar_nombres_imagenes():
-    return list(coleccion_json.distinct("nombre"))
+    resultados = db["imagenes_json"].find({}, {"_id": 0, "nombre": 1})
+    return [r["nombre"] for r in resultados]

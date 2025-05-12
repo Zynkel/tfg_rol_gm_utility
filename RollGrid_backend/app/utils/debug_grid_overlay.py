@@ -38,7 +38,7 @@ def dibujar_cuadricula_desde_json(ruta_imagen, ruta_json, ruta_salida):
 
 if __name__ == "__main__":
     dibujar_cuadricula_desde_json(
-        "ejemplos/llanura.jpg",
-        "salida/llanura_cuadricula.json",
-        "salida/llanura_comparacion.jpg"
+        "ejemplos/dungeon_pb1.jpg",
+        "salida/dungeon_pb1_cuadricula.json",
+        "salida/dungeon_pb1_comparacion.jpg"
     )

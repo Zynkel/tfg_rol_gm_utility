@@ -29,7 +29,7 @@ def detectar_cuadricula(image_path, results_dir, line_gap=10):
     img = cv2.imread(image_path)
     if img is None:
         print(f"Error: no se pudo cargar la imagen en '{image_path}'")
-        return None
+        return
 
     original = img.copy()
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -53,13 +53,9 @@ def detectar_cuadricula(image_path, results_dir, line_gap=10):
     vert = agrupar_lineas(vert_raw)
     sx = median_spacing(vert)
     sy = median_spacing(horiz)
-
-    if not horiz or not vert or not sx or not sy:
-        return None
-
     origen = {
-        "x": min(vert),
-        "y": min(horiz)
+        "x": min(vert) if vert else None,
+        "y": min(horiz) if horiz else None
     }
 
     base = os.path.splitext(os.path.basename(image_path))[0]
@@ -67,7 +63,7 @@ def detectar_cuadricula(image_path, results_dir, line_gap=10):
         "imagen": os.path.basename(image_path),
         "modelo": "OpenCV",
         "origen_cuadricula": origen,
-        "espaciado_rejilla": {"x": sx, "y": sy},
+        "espaciado_rejilla": {"x": sx if sx else None, "y": sy if sy else None},
         "lineas_verticales": vert,
         "lineas_horizontales": horiz
     }
@@ -76,9 +72,7 @@ def detectar_cuadricula(image_path, results_dir, line_gap=10):
     json_path = os.path.join(results_dir, f"{base}_cuadricula.json")
     with open(json_path, 'w') as jf:
         json.dump(json_data, jf, indent=4)
-
-    print(f"Cuadrícula detectada y guardada en: {json_path}")
-    return json_data
+    print(f"JSON de cuadrícula guardado en: {json_path}")
 
 if __name__ == "__main__":
-    detectar_cuadricula("ejemplos/llanura.jpg", "salida")
+    detectar_cuadricula("ejemplos/dungeon_pb1.jpg", "salida")
