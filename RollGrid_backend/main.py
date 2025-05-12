@@ -10,8 +10,8 @@ import base64
 
 from app.utils.grid_detector import detectar_cuadricula
 
-# --- Configuración base ---
 app = FastAPI()
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMP_DIR = os.path.join(BASE_DIR, "temp")
 SALIDA_DIR = os.path.join(BASE_DIR, "salida")
@@ -19,12 +19,10 @@ SALIDA_DIR = os.path.join(BASE_DIR, "salida")
 os.makedirs(TEMP_DIR, exist_ok=True)
 os.makedirs(SALIDA_DIR, exist_ok=True)
 
-# --- Conexión a MongoDB ---
 client = MongoClient("mongodb://localhost:27017/")
 db = client["rollgrid_db"]
 fs = gridfs.GridFS(db)
 
-# --- Middleware CORS (si lo usas desde Unity o frontend externo) ---
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -33,78 +31,88 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# --- POST /upload ---
 @app.post("/upload")
-async def subir_imagen(archivo: UploadFile = File(...)):
+async def upload_image(file: UploadFile = File(...)):
     try:
-        # Guardar archivo temporalmente
-        ruta_temporal = os.path.join(TEMP_DIR, archivo.filename)
-        with open(ruta_temporal, "wb") as buffer:
-            shutil.copyfileobj(archivo.file, buffer)
+        temp_path = os.path.join(TEMP_DIR, file.filename)
+        with open(temp_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
 
-        # Guardar en MongoDB
-        with open(ruta_temporal, "rb") as f:
-            imagen_id = fs.put(f, filename=archivo.filename, content_type=archivo.content_type)
+        with open(temp_path, "rb") as f:
+            image_id = fs.put(f, filename=file.filename, content_type=file.content_type)
 
-        # Detectar cuadrícula
-        resultado = detectar_cuadricula(ruta_temporal, SALIDA_DIR)
+        result = detectar_cuadricula(temp_path, SALIDA_DIR)
 
-        # Eliminar archivo temporal
-        os.remove(ruta_temporal)
+        os.remove(temp_path)
 
-        # Armar JSON de metadatos
-        datos_json = {
-            "cuadricula": resultado if resultado else None
-        }
+        json_data = {"grid": result} if result else {}
 
         db["imagenes_json"].insert_one({
-            "nombre": archivo.filename,
-            "imagen_id": imagen_id,
-            "datos": datos_json
+            "name": file.filename,
+            "image_id": image_id,
+            "data": json_data
         })
 
-        if resultado:
-            return JSONResponse(status_code=200, content={"mensaje": "Imagen guardada y analizada correctamente.", "cuadricula": resultado})
+        if result:
+            return JSONResponse(status_code=200, content={"message": "Image saved and grid detected.", "grid": result})
         else:
-            return JSONResponse(status_code=202, content={"mensaje": "Imagen guardada, pero no se detectó cuadrícula.", "cuadricula": None})
+            return JSONResponse(status_code=202, content={"message": "Image saved, but grid not detected.", "grid": None})
 
     except Exception as e:
         import traceback
         traceback.print_exc()
         return JSONResponse(status_code=500, content={"error": str(e)})
 
-# --- GET /imagenes ---
-@app.get("/imagenes")
-def listar_imagenes():
-    nombres = db["imagenes_json"].distinct("nombre")
-    return {"imagenes": nombres}
+@app.get("/images")
+def list_images():
+    names = db["imagenes_json"].distinct("name")
+    return {"images": names}
 
-# --- GET /imagen/{nombre} ---
-@app.get("/imagen/{nombre}")
-def obtener_imagen_y_datos(nombre: str):
-    entrada = db["imagenes_json"].find_one({"nombre": nombre})
-    if not entrada:
-        raise HTTPException(status_code=404, detail="Imagen no encontrada.")
+@app.get("/image/{name}")
+def get_image_and_data(name: str):
+    entry = db["imagenes_json"].find_one({"name": name})
+    if not entry:
+        raise HTTPException(status_code=404, detail="Image not found.")
 
-    imagen_id = entrada["imagen_id"]
-    datos = entrada.get("datos", {})
+    image_id = entry["image_id"]
+    data = entry.get("data", {})
 
     try:
-        binario = fs.get(imagen_id).read()
-        imagen_base64 = base64.b64encode(binario).decode("utf-8")
+        binary = fs.get(image_id).read()
+        image_base64 = base64.b64encode(binary).decode("utf-8")
         return {
-            "nombre": nombre,
-            "datos": datos,
-            "imagen_base64": imagen_base64
+            "name": name,
+            "data": data,
+            "image_base64": image_base64
         }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Error al recuperar la imagen.")
+    except Exception:
+        raise HTTPException(status_code=500, detail="Error retrieving image.")
 
-# --- GET /datos/{nombre} ---
-@app.get("/datos/{nombre}")
-def obtener_datos(nombre: str):
-    entrada = db["imagenes_json"].find_one({"nombre": nombre})
-    if not entrada:
-        raise HTTPException(status_code=404, detail="Imagen no encontrada.")
+@app.get("/data/{name}")
+def get_data(name: str):
+    entry = db["imagenes_json"].find_one({"name": name})
+    if not entry:
+        raise HTTPException(status_code=404, detail="Image not found.")
 
-    return entrada.get("datos", {})
+    return entry.get("data", {})
+
+@app.delete("/image/{name}")
+def delete_image(name: str):
+    found = False
+
+    entry = db["imagenes_json"].find_one({"name": name})
+    if entry:
+        image_id = entry.get("image_id")
+        if image_id:
+            try:
+                fs.delete(image_id)
+                found = True
+            except Exception:
+                pass
+        db["imagenes_json"].delete_one({"name": name})
+        found = True
+
+    if found:
+        return {"message": f"'{name}' deleted if it existed."}
+    else:
+        return JSONResponse(status_code=404, content={"message": f"'{name}' not found in database."})
