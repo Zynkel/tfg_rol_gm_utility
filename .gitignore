@@ -24,18 +24,20 @@ instance/
 pip-wheel-metadata/
 *.dist-info/
 
-# --- MongoDB  ---
+# --- MongoDB ---
 data/maps/
 
-# --- 🧠 Modelos de IA ---
+# ---  Modelos de IA ---
 model/*.tflite
 model/*.h5
 
-# ---  Archivos de prueba ---
+# --- Archivos de prueba y salida ---
 test_outputs/
 *.test.json
+salida/*.jpg
+salida/*.json
 
-# ---  Unity  ---
+# --- Unity ---
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
@@ -48,16 +50,15 @@ UserSettings/
 *.unityproj
 *.sln
 
-# Paquetes externos descargados por Unity
 Packagescom.unity.
 
-# Visual Studio
-.vscode
-.csproj
-.unityproj
-.sln
-.suo
-.tmp
+# --- Visual Studio ---
+.vscode/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
 .user
 .userprefs
 .pidb
@@ -71,7 +72,7 @@ Packagescom.unity.
 *.user
 *.userprefs
 
-# --- 💻 Sistema operativo ---
+# --- Sistema operativo ---
 .DS_Store
 Thumbs.db
 desktop.ini
