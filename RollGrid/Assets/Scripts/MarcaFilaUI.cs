@@ -10,22 +10,28 @@ public class MarcaFilaUI : MonoBehaviour
     public TextMeshProUGUI texto;
     public Button botonEditar;
     public Button botonEliminar;
-    [HideInInspector] public NavegadorManager manager;
+    [HideInInspector] public NavegadorController navegadorController;
+    public MarcaUI marcaUIAsociada;
 
     [SerializeField] private GameObject marcaAsociada;
     private bool estaSeleccionada = false;
     private Color colorSeleccionado = new Color(0.3f, 0.3f, 0.3f);// Seleccionado azulado
     private Color colorNormal = new Color(0.8f, 0.9f, 0f, 0f); //Normal transparente
+    private DetalleMarcaController detalleController;
 
-    public void Configurar(Sprite sprite, string nombre, GameObject marca, NavegadorManager Navmanager)
+    public void Configurar(Sprite sprite, string nombre, GameObject marca, DetalleMarcaController detalles, NavegadorController navController, MarcaUI marcaUI)
     {
         icono.sprite = sprite;
         texto.text = nombre;
         marcaAsociada = marca;
-        manager = Navmanager;
+        marcaUIAsociada = marcaUI;
+        detalleController = detalles;
+        navegadorController = navController;
+
+        marcaAsociada.AddComponent<MarcaFilaUI>();
 
         botonEliminar.onClick.AddListener(EliminarMarca);
-        botonEditar.onClick.AddListener(EditarMarca);
+        botonEditar.onClick.AddListener(() => detalleController.MostrarDetalles(marca));
 
         Deseleccionar();
     }   
@@ -55,7 +61,12 @@ public class MarcaFilaUI : MonoBehaviour
 
     public void AlClickear()
     {
-        manager.FilaSeleccionada(this);
+        navegadorController.FilaSeleccionada(this);
+    }
+
+    public bool isSeleccionada()
+    {
+        return estaSeleccionada;
     }
 
     private void EliminarMarca()
@@ -91,17 +102,5 @@ public class MarcaFilaUI : MonoBehaviour
 
         // Destruir desde un objeto activo
         SafeDestroyer.Instance.DestroySafely(this.gameObject);
-    }
-
-    private IEnumerator DestruirEnSiguienteFrame()
-    {
-        yield return null; // espera 1 frame
-        Destroy(this.gameObject);
-    }
-
-    private void EditarMarca()
-    {
-        Debug.Log("Editar marca: " + texto.text);
-        // Aquí puedes abrir un panel de edición en el futuro
     }
 }

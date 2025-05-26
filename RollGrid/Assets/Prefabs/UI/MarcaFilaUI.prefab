@@ -546,6 +546,7 @@ MonoBehaviour:
   botonEditar: {fileID: 474414093905974864}
   botonEliminar: {fileID: 5695958496972107274}
   manager: {fileID: 0}
+  detalleController: {fileID: 0}
   marcaAsociada: {fileID: 0}
 --- !u!114 &480260207511907781
 MonoBehaviour:

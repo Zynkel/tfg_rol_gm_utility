@@ -2,12 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 public class MarcaItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public Image fondo;
+    public UnityEngine.UI.Image fondo;
     public TextMeshProUGUI texto;
-    public Image icono;
+    public UnityEngine.UI.Image icono;
+    public TipoMarca tipo;
 
     //Variables privadas para arrastar la marca.
     private Transform originalParent;
@@ -17,10 +19,11 @@ public class MarcaItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private Color colorNormal = new Color32(0xEF, 0xEA, 0xBB, 0x00); //EFEAB8
     private Color colorSeleccionado = new Color32(0x93, 0x93, 0x93, 0xFF); //939393
 
-    public void Configurar(string nombre, Sprite sprite)
+    public void Configurar(string nombre, Sprite sprite, TipoMarca tipoMarca)
     {
         texto.text = nombre;
         icono.sprite = sprite;
+        tipo = tipoMarca;
         Desmarcar();
     }
 
