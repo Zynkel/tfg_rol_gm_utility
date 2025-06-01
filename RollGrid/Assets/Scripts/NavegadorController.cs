@@ -1,13 +1,18 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static FiltroNavegadorController;
 
 public class NavegadorController : MonoBehaviour
 {
     public RectTransform content; // El content del ScrollView
     public GameObject filaPrefab; // El prefab de la fila
-    public DetalleMarcaController panelDetalles;
+    public DetalleMarcaController panelDetalles;    
 
     private MarcaFilaUI filaSeleccionada;
+    private List<MarcaFilaUI> listaFilasNavegador = new List<MarcaFilaUI>();
+
 
     public void AnyadirMarca(Sprite icono, string nombre, GameObject marcaMapa)
     {
@@ -17,6 +22,8 @@ public class NavegadorController : MonoBehaviour
 
         filaUI.Configurar(icono, nombre, marcaMapa, panelDetalles, this, marcaUI);
         marcaUI.filaAsociada = filaUI;
+
+        listaFilasNavegador.Add(filaUI);
 
         /*
          * Esto fuerza a Unity a recalcular el layout de la tabla para evitar que la primera fila salga 
@@ -34,5 +41,25 @@ public class NavegadorController : MonoBehaviour
 
         filaSeleccionada = nuevaFila;
         filaSeleccionada.Seleccionar();
+    }
+
+    public void AplicarFiltro(FiltroNavegador filtro) 
+    {
+        string tipoSeleccionado = filtro.tipo.ToString();
+        string estadoSeleccionado = filtro.estado.ToString();
+        string nombreTexto = filtro.nombre.ToLower();
+
+        foreach (var fila in listaFilasNavegador)
+        {
+            MarcaUI marcaFilaActual = fila.marcaUIAsociada;
+
+            bool coincideNombre = string.IsNullOrEmpty(nombreTexto) || marcaFilaActual.nombre.ToLower().Contains(nombreTexto);
+
+            bool coincideEstado = estadoSeleccionado == "Todos" || marcaFilaActual.estado.ToString() == estadoSeleccionado;
+
+            bool coincideTipo = tipoSeleccionado == "Todos" || marcaFilaActual.tipo.ToString() == tipoSeleccionado;
+
+            fila.gameObject.SetActive(coincideNombre && coincideEstado && coincideTipo);
+        }
     }
 }

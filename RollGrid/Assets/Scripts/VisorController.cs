@@ -1,3 +1,4 @@
+using SFB;
 using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -119,6 +120,38 @@ public class VisorController : MonoBehaviour, IDropHandler
         else
         {
             Debug.LogError("Archivo no encontrado: " + rutaMapa);
+        }
+    }
+
+    public void CargarImagenDesdeArchivo()
+    {
+        var extensiones = new[] {
+            new ExtensionFilter("Imagenes", "png", "jpg", "jpeg")
+        };
+
+        // Abre el diálogo de selección de archivo
+        string[] paths = StandaloneFileBrowser.OpenFilePanel("Selecciona un mapa", "", extensiones, false);
+
+        if (paths.Length > 0 && File.Exists(paths[0]))
+        {
+            StartCoroutine(CargarImagen(paths[0]));
+        }
+    }
+
+    private System.Collections.IEnumerator CargarImagen(string path)
+    {
+        // Cargar archivo como textura
+        var www = new WWW("file://" + path);
+        yield return www;
+
+        Texture2D tex = www.texture;
+        if (tex != null)
+        {
+            mapaCargado.texture = tex;
+        }
+        else
+        {
+            Debug.LogError("Error al cargar la imagen.");
         }
     }
 }

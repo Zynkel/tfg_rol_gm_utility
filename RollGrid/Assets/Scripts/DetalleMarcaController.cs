@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.EventSystems;
 using static ListaMarcasUI;
+using System.Collections.Generic;
 
 public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHandler
 {
@@ -19,6 +20,7 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
     public Button botonGuardar;
     public Button botonRecolocar;
 
+    [SerializeField] private MarcasManager marcasManager;
     [SerializeField] private VisorController visorController; //Controlador del visor para mover marca.
     [SerializeField] private Texture2D cursorDeRecolocar;
     private GameObject marcaActual;
@@ -27,8 +29,10 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
 
     public void MostrarDetalles(GameObject marca)
     {
-        panel.SetActive(true);
+        InicializarDropdowns();
         panel.GetComponent<CanvasGroup>().alpha = 1;
+        panel.GetComponent<CanvasGroup>().interactable = true;
+        panel.GetComponent<CanvasGroup>().blocksRaycasts = true;
         marcaActual = marca;
 
         MarcaUI marcaUI = marca.GetComponent<MarcaUI>();
@@ -60,8 +64,9 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
 
         marcaUI.ActualizarFilaAsociada(); //Actualiza la MarcaFilaUI asociada para visualizarse en el navegador.
 
-        panel.SetActive(false);
         panel.GetComponent<CanvasGroup>().alpha = 0;
+        panel.GetComponent<CanvasGroup>().interactable = false;
+        panel.GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
     public void RecolocarMarca()
@@ -98,8 +103,9 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
 
     public void Cancelar()
     {
-        panel.SetActive(false);
         panel.GetComponent<CanvasGroup>().alpha = 0;
+        panel.GetComponent<CanvasGroup>().interactable = false;
+        panel.GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
     public void CambiarTipoMarca(int index)
@@ -110,6 +116,14 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
         MarcaUI marcaUI = marcaActual.GetComponent<MarcaUI>();
         marcaUI.tipo = (TipoMarca)index;
         marcaUI.ActualizarIcono();
+    }
+    public void InicializarDropdowns()
+    {
+        dropdownTipo.ClearOptions();
+        dropdownTipo.AddOptions(marcasManager.ObtenerOpcionesTipoMarca());
+
+        dropdownEstado.ClearOptions();
+        dropdownEstado.AddOptions(marcasManager.ObtenerOpcionesEstadoMarca());
     }
 
     public void CambiarEstadoMarca(int index)
