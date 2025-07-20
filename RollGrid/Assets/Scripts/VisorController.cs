@@ -1,4 +1,5 @@
 using SFB;
+using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,14 +12,16 @@ public class VisorController : MonoBehaviour, IDropHandler
     public NavegadorController navegadorManager; //Script que gestiona el navegador.
     public MarcasManager marcasManager; //Script que gestiona las marcas.
     public Transform contenedorMarcas;
-    public RawImage mapaCargado;
+    public RawImage mapaImagenCargada;
+    public ListaMapasController.MapaData mapaCargado;
+    public MenuContextualController menuContextualController;
 
     private MarcaUI marcaMovida;
     [SerializeField] private DetalleMarcaController panelDetalles;
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (mapaCargado.texture != null)
+        if (mapaImagenCargada.texture != null)
         {
             GameObject marca = eventData.pointerDrag;
 
@@ -37,7 +40,7 @@ public class VisorController : MonoBehaviour, IDropHandler
         nuevaMarca.transform.SetParent(contenedorMarcas, false);
         Image imagenMarca = marcaDropped.icono;
 
-        
+        nuevaMarca.AddComponent<CircleCollider2D>();
 
         Image img = nuevaMarca.AddComponent<Image>();
         img.sprite = imagenMarca.sprite;
@@ -59,7 +62,7 @@ public class VisorController : MonoBehaviour, IDropHandler
         string textoMarca = marcaDropped.GetTextoMarca();
 
         MarcaUI marcaUI = nuevaMarca.AddComponent<MarcaUI>();
-        marcaUI.Inicializar(textoMarca, marcaDropped.tipo, img.sprite, marcasManager);
+        marcaUI.Inicializar(textoMarca, marcaDropped.tipo, img.sprite, marcasManager, menuContextualController);
 
 
         navegadorManager.AnyadirMarca(img.sprite, textoMarca, nuevaMarca);
@@ -97,30 +100,7 @@ public class VisorController : MonoBehaviour, IDropHandler
                 marcaMovida = null;
             }
         }
-    }
-
-    public void CargarMapa()
-    {
-        string rutaRelativa = "Maps/map.png";
-        string rutaMapa = Path.Combine(Application.dataPath, rutaRelativa);
-
-        if (File.Exists(rutaMapa))
-        {
-            byte[] datosMapa = File.ReadAllBytes(rutaMapa);
-            Texture2D mapa = new Texture2D(2, 2);
-            if (mapa.LoadImage(datosMapa))
-            {
-                mapaCargado.texture = mapa;
-            }
-            else
-            {
-                Debug.LogError("Error al cargar mapa: " + rutaMapa);
-            }
-        }
-        else
-        {
-            Debug.LogError("Archivo no encontrado: " + rutaMapa);
-        }
+        
     }
 
     public void CargarImagenDesdeArchivo()
@@ -133,9 +113,22 @@ public class VisorController : MonoBehaviour, IDropHandler
         string[] paths = StandaloneFileBrowser.OpenFilePanel("Selecciona un mapa", "", extensiones, false);
 
         if (paths.Length > 0 && File.Exists(paths[0]))
-        {
+        {            
             StartCoroutine(CargarImagen(paths[0]));
         }
+    }
+
+    public void CargarMapaDesdeLista(Texture2D textura)
+    {
+        mapaImagenCargada.texture = textura;
+    }
+
+    /**
+     * Se llama para evitar realizar acciones que requieren un mapa previo cargado en el visor.
+     */
+    public Boolean hayMapaCargado()
+    {
+        return mapaImagenCargada != null;
     }
 
     private System.Collections.IEnumerator CargarImagen(string path)
@@ -147,7 +140,7 @@ public class VisorController : MonoBehaviour, IDropHandler
         Texture2D tex = www.texture;
         if (tex != null)
         {
-            mapaCargado.texture = tex;
+            mapaImagenCargada.texture = tex;
         }
         else
         {

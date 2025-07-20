@@ -8,9 +8,10 @@ using System.Collections.Generic;
 
 public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHandler
 {
-    public GameObject panel; // Asigna el panel en el Inspector
+    public GameObject panel; 
 
     [Header("Referencias UI")]
+    public VinculacionController vinculacionController;
     public TMP_InputField inputNombre;
     public TMP_Dropdown dropdownTipo;
     public TMP_Dropdown dropdownEstado;
@@ -19,13 +20,18 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
     public TMP_InputField textoCoordenadaY;
     public Button botonGuardar;
     public Button botonRecolocar;
-
-    [SerializeField] private MarcasManager marcasManager;
-    [SerializeField] private VisorController visorController; //Controlador del visor para mover marca.
+    public Button botonVincular;
     [SerializeField] private Texture2D cursorDeRecolocar;
     private GameObject marcaActual;
     private RectTransform panelDetalles;
     private Vector2 offset;
+
+    [Header("Controladores")]
+    public ListaMapasController listaMapasController;
+    [SerializeField] private MarcasManager marcasManager;
+    [SerializeField] private VisorController visorController; //Controlador del visor para mover marca.
+
+    private MarcaUI marcaUI;
 
     public void MostrarDetalles(GameObject marca)
     {
@@ -35,7 +41,11 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
         panel.GetComponent<CanvasGroup>().blocksRaycasts = true;
         marcaActual = marca;
 
-        MarcaUI marcaUI = marca.GetComponent<MarcaUI>();
+        marcaUI = marca.GetComponent<MarcaUI>();
+        //Seleccionar la fila en el navegador si no está.
+        MarcaFilaUI filaDeLaMarca = marca.GetComponent<MarcaFilaUI>();
+        filaDeLaMarca.Seleccionar();
+
         inputNombre.text = marcaUI.nombre;
 
         dropdownTipo.SetValueWithoutNotify((int)marcaUI.tipo);
@@ -43,7 +53,20 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
 
         inputNotas.text = marcaUI.notas;
         textoCoordenadaX.text = $"({marca.transform.localPosition.x:0})";
-        textoCoordenadaY.text = $"({marca.transform.localPosition.y:0})";        
+        textoCoordenadaY.text = $"({marca.transform.localPosition.y:0})";
+
+        // Activar el botón de vincular solo si es de tipo "puerta"
+        botonVincular.interactable = (marcaUI.tipo == TipoMarca.Puerta);
+    }
+
+    public void InicializarDropdowns()
+    {
+        dropdownTipo.ClearOptions();
+        dropdownTipo.AddOptions(marcasManager.ObtenerOpcionesTipoMarca());
+        dropdownTipo.onValueChanged.AddListener(ComprobarTipo);
+
+        dropdownEstado.ClearOptions();
+        dropdownEstado.AddOptions(marcasManager.ObtenerOpcionesEstadoMarca());
     }
 
     public void GuardarCambios()
@@ -115,15 +138,11 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
 
         MarcaUI marcaUI = marcaActual.GetComponent<MarcaUI>();
         marcaUI.tipo = (TipoMarca)index;
-        marcaUI.ActualizarIcono();
-    }
-    public void InicializarDropdowns()
-    {
-        dropdownTipo.ClearOptions();
-        dropdownTipo.AddOptions(marcasManager.ObtenerOpcionesTipoMarca());
 
-        dropdownEstado.ClearOptions();
-        dropdownEstado.AddOptions(marcasManager.ObtenerOpcionesEstadoMarca());
+        //Al cambiar el tipo se comprueba si es tipo marca.
+        botonVincular.interactable = (marcaUI.tipo == TipoMarca.Puerta);
+
+        marcaUI.ActualizarIcono();
     }
 
     public void CambiarEstadoMarca(int index)
@@ -132,6 +151,18 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
             && marcaActual.GetComponent<MarcaFilaUI>() == null) return;
 
         MarcaFilaUI marcaFila = marcaActual.GetComponent<MarcaFilaUI>();
+    }
+
+    //Comprueba si el tipo de la marca es de Puerta, en caso afirmativo activa el botón Vincular.
+    public void ComprobarTipo(int index)
+    {
+        //Al cambiar el tipo se comprueba si es tipo marca.
+        botonVincular.interactable = ((TipoMarca)index == TipoMarca.Puerta);
+    }
+
+    public void AlPulsarBotonVincular()
+    {
+        vinculacionController.Mostrar(marcaUI, listaMapasController.listaMapasNombres.images);
     }
 
     //En Awake, guardamos la referencia al RectTransform del panel. Esto se hace una vez al iniciar.

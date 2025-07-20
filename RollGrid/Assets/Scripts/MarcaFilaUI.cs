@@ -69,7 +69,7 @@ public class MarcaFilaUI : MonoBehaviour
         return estaSeleccionada;
     }
 
-    private void EliminarMarca()
+    public void EliminarMarca()
     {
         // Limpia el objeto seleccionado si es este mismo
         if (EventSystem.current.currentSelectedGameObject == this.gameObject)

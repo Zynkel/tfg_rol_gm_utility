@@ -24,17 +24,21 @@ public class MarcaUI : MonoBehaviour, IPointerClickHandler
     public EstadoMarca estado;
     [TextArea(2, 5)] public string notas;
     public MarcaFilaUI filaAsociada;
+    public string mapaVinculado;
 
     public MarcasManager managerMarcas;
+    public MenuContextualController menuContextual;
 
-    public void Inicializar(string nombre, TipoMarca tipo, Sprite sprite, MarcasManager manager)
+    public void Inicializar(string nombre, TipoMarca tipo, Sprite sprite, MarcasManager manager, MenuContextualController menu)
     {
         this.nombre = nombre;
         this.tipo = tipo;
         this.estado = EstadoMarca.Activo;
         this.notas = "";
+        mapaVinculado = "";
         icono = sprite;
         managerMarcas = manager;
+        menuContextual = menu;
     }
 
     public void ActualizarIcono()
@@ -53,5 +57,11 @@ public class MarcaUI : MonoBehaviour, IPointerClickHandler
     {
         // Seleccionar visualmente esta fila
         filaAsociada?.navegadorController.FilaSeleccionada(filaAsociada);
+
+        Vector2 posicionPantalla = Input.mousePosition;
+        if (gameObject!= null)
+        {
+            menuContextual.Mostrar(posicionPantalla, gameObject);
+        }    
     }
 }
