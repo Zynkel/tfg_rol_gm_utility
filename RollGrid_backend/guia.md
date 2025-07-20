@@ -16,12 +16,40 @@ Este backend permite subir mapas de rol en imagen, analizarlos con inteligencia 
 
 ## 🔧 Instalación paso a paso
 
+## ⚠️ Clonación del proyecto con Git LFS
+
+Este proyecto utiliza [Git LFS (Large File Storage)](https://git-lfs.com/) para gestionar archivos grandes, como el modelo entrenado de IA (`mask_rcnn_model.pth`).
+
+### 📥 Para clonar correctamente el proyecto y disponer del modelo:
+
+1. Instala Git LFS (una sola vez en tu sistema):
+
+```bash
+# En Windows (con Chocolatey)
+choco install git-lfs
+
+# En Linux
+sudo apt install git-lfs
+
+# En macOS
+brew install git-lfs
+
+#
+
 ### 1. Clona o descarga el proyecto
 
 ```bash
+git lfs install
 git clone https://github.com/tu_usuario/tfg_rol_gm_utility.git
 cd tfg_rol_gm_utility/RollGrid_backend
 ```
+## Verifica que el archivo models/mask_rcnn_model.pth esté descargado.Si no se descarga, ejecuta:
+
+```bash
+git lfs pull
+```
+
+### ⚠️ Importante: Si descargas el proyecto como .zip desde GitHub, el modelo .pth no estará incluido. Debes usar git clone con Git LFS para obtenerlo.
 
 ### 2. Crea un entorno virtual (opcional pero recomendado)
 
