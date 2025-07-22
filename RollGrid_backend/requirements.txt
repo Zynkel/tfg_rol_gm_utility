@@ -3,3 +3,7 @@ uvicorn
 pymongo
 opencv-python
 numpy
+Pillow
+torch
+detectron2 @ git+https://github.com/facebookresearch/detectron2.git
+python-multipart

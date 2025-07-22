@@ -1,0 +1,9 @@
+ipython
+black
+isort
+mypy
+flake8
+pytest
+httpx
+watchgod  
+python-dotenv
