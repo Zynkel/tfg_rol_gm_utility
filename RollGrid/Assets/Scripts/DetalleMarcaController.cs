@@ -11,13 +11,10 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
     public GameObject panel; 
 
     [Header("Referencias UI")]
-    public VinculacionController vinculacionController;
     public TMP_InputField inputNombre;
     public TMP_Dropdown dropdownTipo;
     public TMP_Dropdown dropdownEstado;
     public TMP_InputField inputNotas;
-    public TMP_InputField textoCoordenadaX;
-    public TMP_InputField textoCoordenadaY;
     public Button botonGuardar;
     public Button botonRecolocar;
     public Button botonVincular;
@@ -27,24 +24,22 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
     private Vector2 offset;
 
     [Header("Controladores")]
+    public VinculacionController vinculacionController;
     public ListaMapasController listaMapasController;
+    [SerializeField] public VisorController visorController; //Controlador del visor para mover marca.
     [SerializeField] private MarcasManager marcasManager;
-    [SerializeField] private VisorController visorController; //Controlador del visor para mover marca.
 
     private MarcaUI marcaUI;
 
     public void MostrarDetalles(GameObject marca)
     {
+        panel.SetActive(true);
         InicializarDropdowns();
-        panel.GetComponent<CanvasGroup>().alpha = 1;
         panel.GetComponent<CanvasGroup>().interactable = true;
         panel.GetComponent<CanvasGroup>().blocksRaycasts = true;
         marcaActual = marca;
 
         marcaUI = marca.GetComponent<MarcaUI>();
-        //Seleccionar la fila en el navegador si no está.
-        MarcaFilaUI filaDeLaMarca = marca.GetComponent<MarcaFilaUI>();
-        filaDeLaMarca.Seleccionar();
 
         inputNombre.text = marcaUI.nombre;
 
@@ -52,8 +47,6 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
         dropdownEstado.SetValueWithoutNotify((int)marcaUI.estado);
 
         inputNotas.text = marcaUI.notas;
-        textoCoordenadaX.text = $"({marca.transform.localPosition.x:0})";
-        textoCoordenadaY.text = $"({marca.transform.localPosition.y:0})";
 
         // Activar el botón de vincular solo si es de tipo "puerta"
         botonVincular.interactable = (marcaUI.tipo == TipoMarca.Puerta);
@@ -87,9 +80,14 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
 
         marcaUI.ActualizarFilaAsociada(); //Actualiza la MarcaFilaUI asociada para visualizarse en el navegador.
 
-        panel.GetComponent<CanvasGroup>().alpha = 0;
+        CerrarPanel();
+    }
+
+    public void CerrarPanel()
+    {
         panel.GetComponent<CanvasGroup>().interactable = false;
         panel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        panel.SetActive(false);
     }
 
     public void RecolocarMarca()
@@ -100,35 +98,12 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
         CanvasGroup cg = this.GetComponent<CanvasGroup>();
         cg.interactable = false;
         cg.blocksRaycasts = false;
-        cg.alpha = 0.3f;
 
         //Cambiamos el cursor
         Cursor.SetCursor(cursorDeRecolocar, Vector2.zero, CursorMode.Auto);
 
         MarcaUI marcaUI = marcaActual.GetComponent<MarcaUI>();
         visorController.MoverMarca(marcaUI);
-    }
-
-    public void ActualizarCoordenadas(Vector2 localPos)
-    {
-        textoCoordenadaX.text = $"({Mathf.RoundToInt(localPos.x)}";
-        textoCoordenadaY.text = $"({Mathf.RoundToInt(localPos.y)})";
-
-        //Volvemos a mostrar el panel completo.
-        CanvasGroup cg = this.GetComponent<CanvasGroup>();
-        cg.interactable = true;
-        cg.blocksRaycasts = true;
-        cg.alpha = 1.0f;
-
-        //Restaurar cursor.
-        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-    }
-
-    public void Cancelar()
-    {
-        panel.GetComponent<CanvasGroup>().alpha = 0;
-        panel.GetComponent<CanvasGroup>().interactable = false;
-        panel.GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
     public void CambiarTipoMarca(int index)

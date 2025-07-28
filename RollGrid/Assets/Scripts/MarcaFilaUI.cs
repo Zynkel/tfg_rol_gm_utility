@@ -28,7 +28,11 @@ public class MarcaFilaUI : MonoBehaviour
         detalleController = detalles;
         navegadorController = navController;
 
-        marcaAsociada.AddComponent<MarcaFilaUI>();
+        MarcaFilaUI filaMarcaAsociada = marcaAsociada.AddComponent<MarcaFilaUI>();
+        filaMarcaAsociada.icono = icono;
+        filaMarcaAsociada.texto = texto;
+        filaMarcaAsociada.marcaAsociada = marca;
+        filaMarcaAsociada.marcaUIAsociada = marcaUI;
 
         botonEliminar.onClick.AddListener(EliminarMarca);
         botonEditar.onClick.AddListener(() => detalleController.MostrarDetalles(marca));
@@ -45,6 +49,8 @@ public class MarcaFilaUI : MonoBehaviour
         {
             // Ejemplo: resaltar marca aumentando su tamaño o cambiando color
             marcaAsociada.transform.localScale = Vector3.one * 1.3f;
+            Outline outline = marcaAsociada.GetComponent<Outline>();
+            outline.enabled = true;
         }
     }
 
@@ -56,6 +62,8 @@ public class MarcaFilaUI : MonoBehaviour
         if (marcaAsociada != null)
         {
             marcaAsociada.transform.localScale = Vector3.one;
+            Outline outline = marcaAsociada.GetComponent<Outline>();
+            outline.enabled = false;
         }
     }
 
@@ -102,5 +110,8 @@ public class MarcaFilaUI : MonoBehaviour
 
         // Destruir desde un objeto activo
         SafeDestroyer.Instance.DestroySafely(this.gameObject);
+
+        detalleController.CerrarPanel();
+        marcaUIAsociada.menuContextual.Cerrar();
     }
 }

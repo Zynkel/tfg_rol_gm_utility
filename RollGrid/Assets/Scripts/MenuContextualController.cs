@@ -45,6 +45,7 @@ public class MenuContextualController : MonoBehaviour
             {
                 //Llamar al controlador para cargar mapa
                 StartCoroutine(listaMapasController.CargarMapaDesdeAPI(marcaActual.mapaVinculado));
+                Cerrar();
             });
         }
 
@@ -52,8 +53,9 @@ public class MenuContextualController : MonoBehaviour
         botonEliminar.onClick.RemoveAllListeners();
         botonEliminar.onClick.AddListener(() =>
         {
-            MarcaFilaUI filaDeLaMarca = marca.GetComponent<MarcaFilaUI>();
-            filaDeLaMarca.EliminarMarca();
+            MarcaUI marcaUI = marca.GetComponent<MarcaUI>();
+            marcaUI.filaAsociada.EliminarMarca();
+            Cerrar();
         });
 
         //Funcionalidad botón cerrar del menú.

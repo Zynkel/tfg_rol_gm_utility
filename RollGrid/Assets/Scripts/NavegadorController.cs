@@ -59,7 +59,8 @@ public class NavegadorController : MonoBehaviour
 
             bool coincideTipo = tipoSeleccionado == "Todos" || marcaFilaActual.tipo.ToString() == tipoSeleccionado;
 
-            fila.gameObject.SetActive(coincideNombre && coincideEstado && coincideTipo);
+            marcaFilaActual.gameObject.SetActive(coincideNombre && coincideEstado && coincideTipo);
+            fila.gameObject.SetActive(coincideNombre && coincideEstado && coincideTipo);            
         }
     }
 }

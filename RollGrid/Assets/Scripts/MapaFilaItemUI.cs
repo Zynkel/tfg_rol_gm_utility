@@ -12,12 +12,16 @@ public class MapaFilaItemUI : MonoBehaviour, IPointerClickHandler
     private string nombreMapa;
     private float ultimoClickTime;
     private const float tiempoDobleClick = 0.3f;
+    private Color colorSeleccionado = new Color(0.3f, 0.3f, 0.3f);// Seleccionado azulado
+    private Color colorDefecto = new Color(0.7f, 0.7f, 0.7f);
 
     public void Inicializar(string nombre, ListaMapasController listaMapasController)
     {
         nombreMapa = nombre;
         textoNombreMapa.text = nombre;
         mapasController = listaMapasController;
+
+        GetComponent<Image>().color = colorDefecto;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -38,7 +42,7 @@ public class MapaFilaItemUI : MonoBehaviour, IPointerClickHandler
 
     public void EstablecerSeleccionado(bool seleccionado)
     {
-        GetComponent<Image>().color = seleccionado ? new Color(0.7f, 0.7f, 1f) : Color.white;
+        GetComponent<Image>().color = seleccionado ? colorSeleccionado : colorDefecto;
     }
 
     public string GetNombreMapa() => nombreMapa;

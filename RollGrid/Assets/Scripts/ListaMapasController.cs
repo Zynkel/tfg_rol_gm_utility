@@ -160,13 +160,16 @@ public class ListaMapasController : MonoBehaviour
             textura.LoadImage(imageBytes);
 
             visorController.CargarMapaDesdeLista(textura);
+            visorController.mapaNombreCargado = nombre;
             OcultarPanel();
         }
     }
 
     public void GuardarMapaEnBD()
     {
-        if (visorController.hayMapaCargado())
+        //Tenemos un marca cargado y no está en la lista que hemos obtenido de la API.
+        if (visorController.hayMapaCargado()
+                && !listaMapasNombres.images.Contains(visorController.mapaNombreCargado))
         {
             StartCoroutine(GuardarMapaCoroutine((Texture2D) visorController.mapaImagenCargada.texture));
         }
