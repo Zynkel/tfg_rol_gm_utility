@@ -1,12 +1,15 @@
 from fastapi import APIRouter, File, UploadFile, HTTPException, Form
 from fastapi.responses import StreamingResponse
+from fastapi.encoders import jsonable_encoder
 import tempfile
 import os
 from bson import ObjectId
 from typing import List
+from io import BytesIO
+import base64
 
 from app.services.procesador_mapa import analizar_objetos
-from app.services.grid_utils import extraer_celdas_desde_imagen
+from app.services.grid_utils import extraer_info_cuadricula
 from app.db.mongo_gridfs_backend import (
     guardar_mapa_con_datos,
     obtener_imagen_binaria,
@@ -32,13 +35,24 @@ async def crear_mapa(nombre: str = Form(...), file: UploadFile = File(...)):
 
     try:
         objetos_detectados = analizar_objetos(ruta_temporal)
-        celdas = extraer_celdas_desde_imagen(ruta_temporal)
-        mapa_id = guardar_mapa_con_datos(nombre, contenido, objetos_detectados, celdas)
+        grid_info = extraer_info_cuadricula(ruta_temporal)
+
+        if not grid_info:
+            raise HTTPException(status_code=400, detail="No se pudo detectar la cuadrícula en la imagen.")
+
+        mapa_id = guardar_mapa_con_datos(
+            nombre=nombre,
+            imagen_bytes=contenido,
+            grid=grid_info,
+            objetos=objetos_detectados,
+            personajes=[]
+        )
 
         return {
             "mapa_id": str(mapa_id),
             "mensaje": "✅ Mapa creado y analizado correctamente"
         }
+
     finally:
         os.remove(ruta_temporal)
 
@@ -58,8 +72,8 @@ def obtener_datos_mapa(mapa_id: str):
         raise HTTPException(status_code=404, detail="Mapa no encontrado")
     return {
         "nombre": mapa["nombre"],
-        "celdas": mapa["celdas"],
-        "estados": mapa["estados"]
+        "grid": mapa.get("grid", {}),
+        "estados": mapa.get("estados", [])
     }
 
 
@@ -68,7 +82,7 @@ def obtener_imagen_mapa(mapa_id: str):
     binario = obtener_imagen_binaria(mapa_id)
     if not binario:
         raise HTTPException(status_code=404, detail="Imagen no encontrada")
-    return StreamingResponse(content=binario, media_type="image/jpeg")
+    return StreamingResponse(content=BytesIO(binario), media_type="image/jpeg")
 
 
 @router.get("/mapas/{mapa_id}")
@@ -82,15 +96,14 @@ def obtener_mapa_completo(mapa_id: str):
     if not imagen_binaria:
         raise HTTPException(status_code=404, detail="Imagen no encontrada")
 
-    import base64
     imagen_base64 = base64.b64encode(imagen_binaria).decode("utf-8")
 
     return {
         "id": str(mapa["_id"]),
         "nombre": mapa["nombre"],
         "imagen_base64": imagen_base64,
-        "celdas": mapa["celdas"],
-        "estados": mapa["estados"]
+        "grid": mapa.get("grid", {}),
+        "estados": mapa.get("estados", [])
     }
 
 
@@ -131,12 +144,17 @@ def listar_estados(mapa_id: str):
 
 
 @router.get("/mapas/{mapa_id}/estados/{estado_id}")
-def obtener_estado_individual(mapa_id: str, estado_id: int):
+def obtener_estado_individual(mapa_id: str, estado_id: str):
     db = get_mongo_db()
     mapa = db.mapas.find_one({"_id": ObjectId(mapa_id)}, {"estados": 1})
-    if not mapa or estado_id < 0 or estado_id >= len(mapa["estados"]):
-        raise HTTPException(status_code=404, detail="Estado no encontrado")
-    return mapa["estados"][estado_id]
+    if not mapa:
+        raise HTTPException(status_code=404, detail="Mapa no encontrado")
+
+    for estado in mapa.get("estados", []):
+        if estado.get("id") == estado_id:
+            return jsonable_encoder(estado)
+
+    raise HTTPException(status_code=404, detail="Estado no encontrado")
 
 
 @router.delete("/mapas/{mapa_id}")

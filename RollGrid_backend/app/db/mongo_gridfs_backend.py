@@ -3,6 +3,9 @@ import gridfs
 import os
 from bson import ObjectId
 from app.models.mapa import EstadoMapa, ObjetoEnMapa
+from app.models.personaje_en_mapa import PersonajeEnMapa
+from datetime import datetime
+
 
 client = MongoClient("mongodb://localhost:27017/")
 db = client["rollgrid_db"]
@@ -19,18 +22,28 @@ def guardar_imagen_en_gridfs(file):
     imagen_id = fs.put(contenido, filename=file.filename, content_type=file.content_type)
     return imagen_id
 
-def guardar_mapa_con_datos(nombre: str, imagen_bytes: bytes, objetos: list, celdas: list):
+def guardar_mapa_con_datos(
+    nombre: str,
+    imagen_bytes: bytes,
+    grid: dict,
+    objetos: list,
+    personajes: list = []
+):
     imagen_id = fs.put(imagen_bytes, filename=nombre, content_type="image/jpeg")
 
     estado_inicial = EstadoMapa(
         nombre="Estado inicial",
-        objetos=[ObjetoEnMapa(**obj) for obj in objetos]
+        descripcion="Detectado automáticamente",
+        fecha_creacion=datetime.utcnow().isoformat(),
+        objetos=[ObjetoEnMapa(**obj) for obj in objetos],
+        personajes=[PersonajeEnMapa(**p) for p in personajes]
     )
 
     mapa_doc = {
         "nombre": nombre,
+        "fecha_subida": datetime.utcnow().isoformat(),
         "imagen_id": imagen_id,
-        "celdas": celdas,
+        "grid": grid,
         "estados": [estado_inicial.dict(by_alias=True)]
     }
 
