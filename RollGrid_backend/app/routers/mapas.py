@@ -13,7 +13,6 @@ from app.services.grid_utils import extraer_info_cuadricula
 from app.db.mongo_gridfs_backend import (
     guardar_mapa_con_datos,
     obtener_imagen_binaria,
-    recuperar_imagen_mapa,
     actualizar_mapa,
     get_mongo_db,
 )
@@ -50,7 +49,7 @@ async def crear_mapa(nombre: str = Form(...), file: UploadFile = File(...)):
 
         return {
             "mapa_id": str(mapa_id),
-            "mensaje": "✅ Mapa creado y analizado correctamente"
+            "mensaje": "Mapa creado y analizado correctamente"
         }
 
     finally:
@@ -119,7 +118,7 @@ async def actualizar_datos_mapa(
     if not actualizado:
         raise HTTPException(status_code=400, detail="No se pudo actualizar el mapa")
 
-    return {"mensaje": "🛠️ Mapa actualizado correctamente"}
+    return {"mensaje": "Mapa actualizado correctamente"}
 
 
 @router.post("/mapas/{mapa_id}/estados")
@@ -131,7 +130,7 @@ def agregar_estado(mapa_id: str, estado: EstadoMapa):
     )
     if resultado.modified_count == 0:
         raise HTTPException(status_code=404, detail="Mapa no encontrado")
-    return {"mensaje": "🗺️ Estado agregado correctamente"}
+    return {"mensaje": "Estado agregado correctamente"}
 
 
 @router.get("/mapas/{mapa_id}/estados")
@@ -163,4 +162,4 @@ def eliminar_mapa(mapa_id: str):
     eliminado = db.mapas.delete_one({"_id": ObjectId(mapa_id)})
     if eliminado.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Mapa no encontrado")
-    return {"mensaje": "🗑️ Mapa eliminado correctamente"}
+    return {"mensaje": "Mapa eliminado correctamente"}

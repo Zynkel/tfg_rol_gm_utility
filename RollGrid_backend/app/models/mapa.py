@@ -13,6 +13,7 @@ class ObjetoEnMapa(BaseModel):
     bounding_box: Optional[dict] = None  
     destino_mapa_id: Optional[str] = None 
     destino_estado_id: Optional[str] = None
+    visible: bool = True
 
 class EstadoMapa(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()))
