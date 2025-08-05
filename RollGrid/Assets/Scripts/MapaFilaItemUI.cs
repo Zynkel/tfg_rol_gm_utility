@@ -10,14 +10,16 @@ public class MapaFilaItemUI : MonoBehaviour, IPointerClickHandler
 
     private ListaMapasController mapasController;
     private string nombreMapa;
+    private string idMapa;
     private float ultimoClickTime;
     private const float tiempoDobleClick = 0.3f;
     private Color colorSeleccionado = new Color(0.3f, 0.3f, 0.3f);// Seleccionado azulado
     private Color colorDefecto = new Color(0.7f, 0.7f, 0.7f);
 
-    public void Inicializar(string nombre, ListaMapasController listaMapasController)
+    public void Inicializar(string nombre, string id, ListaMapasController listaMapasController)
     {
         nombreMapa = nombre;
+        idMapa = id;
         textoNombreMapa.text = nombre;
         mapasController = listaMapasController;
 
@@ -31,7 +33,7 @@ public class MapaFilaItemUI : MonoBehaviour, IPointerClickHandler
         if (tiempoDesdeUltimoClick < tiempoDobleClick)
         {
             //Llamar al controlador para cargar mapa
-            StartCoroutine(mapasController.CargarMapaDesdeAPI(nombreMapa));
+            StartCoroutine(mapasController.CargarMapaDesdeAPI(idMapa));
         } else
         {
             mapasController.SeleccionarFila(this);

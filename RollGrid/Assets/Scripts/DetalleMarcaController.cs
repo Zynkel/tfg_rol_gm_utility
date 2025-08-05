@@ -18,6 +18,8 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
     public Button botonGuardar;
     public Button botonRecolocar;
     public Button botonVincular;
+    public ScrollRect scrollRect;
+    public Scrollbar scrollbar;
     [SerializeField] private Texture2D cursorDeRecolocar;
     private GameObject marcaActual;
     private RectTransform panelDetalles;
@@ -30,6 +32,14 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
     [SerializeField] private MarcasManager marcasManager;
 
     private MarcaUI marcaUI;
+
+    void Update()
+    {
+        if (scrollRect.verticalNormalizedPosition < 1f)
+            scrollbar.gameObject.SetActive(true);
+        else
+            scrollbar.gameObject.SetActive(false);
+    }
 
     public void MostrarDetalles(GameObject marca)
     {
@@ -49,7 +59,7 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
         inputNotas.text = marcaUI.notas;
 
         // Activar el botón de vincular solo si es de tipo "puerta"
-        botonVincular.interactable = (marcaUI.tipo == TipoMarca.Puerta);
+        botonVincular.interactable = (marcaUI.tipo == TipoMarca.puerta);
     }
 
     public void InicializarDropdowns()
@@ -115,7 +125,7 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
         marcaUI.tipo = (TipoMarca)index;
 
         //Al cambiar el tipo se comprueba si es tipo marca.
-        botonVincular.interactable = (marcaUI.tipo == TipoMarca.Puerta);
+        botonVincular.interactable = (marcaUI.tipo == TipoMarca.puerta);
 
         marcaUI.ActualizarIcono();
     }
@@ -132,12 +142,12 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
     public void ComprobarTipo(int index)
     {
         //Al cambiar el tipo se comprueba si es tipo marca.
-        botonVincular.interactable = ((TipoMarca)index == TipoMarca.Puerta);
+        botonVincular.interactable = ((TipoMarca)index == TipoMarca.puerta);
     }
 
     public void AlPulsarBotonVincular()
     {
-        vinculacionController.Mostrar(marcaUI, listaMapasController.listaMapasNombres.images);
+        vinculacionController.Mostrar(marcaUI, listaMapasController.listaMapasNombres.mapas);
     }
 
     //En Awake, guardamos la referencia al RectTransform del panel. Esto se hace una vez al iniciar.

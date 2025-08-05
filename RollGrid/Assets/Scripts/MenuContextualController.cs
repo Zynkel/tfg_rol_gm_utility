@@ -35,7 +35,7 @@ public class MenuContextualController : MonoBehaviour
         });
 
         // Habilitar o deshabilitar el botón de viajar."
-        bool puedeCambiar = marcaActual.tipo == TipoMarca.Puerta && !string.IsNullOrEmpty(marcaActual.mapaVinculado);
+        bool puedeCambiar = marcaActual.tipo == TipoMarca.puerta && !string.IsNullOrEmpty(marcaActual.mapaVinculado);
         botonViajar.interactable = puedeCambiar;
 
         if (puedeCambiar)

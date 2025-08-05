@@ -44,9 +44,9 @@ public class ListaMarcasUI : MonoBehaviour, IDragHandler, IBeginDragHandler
         // Crear la lista de marcas
         Marca[] marcas = new Marca[]
         {
-            new Marca("Enemigo", iconoEnemigo, TipoMarca.Enemigo),
-            new Marca("Tesoro", iconoTesoro, TipoMarca.Tesoro),
-            new Marca("Puerta", iconoPuerta, TipoMarca.Puerta),
+            new Marca("Enemigo", iconoEnemigo, TipoMarca.enemigo),
+            new Marca("Tesoro", iconoTesoro, TipoMarca.tesoro),
+            new Marca("Puerta", iconoPuerta, TipoMarca.puerta),
         };
 
         // Por cada marca se crea el objeto MarcaItemUI para asignar texto e imagen.

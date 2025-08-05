@@ -8,13 +8,20 @@ using UnityEngine.UI;
 [System.Serializable]
 public class MapasNombres
 {
-    public List<string> images; //Se tiene que llamar igual que el objeto del JSON, en este caso se llama 'images'
+    public string id;
+    public string nombre;
+}
+
+[System.Serializable]
+public class ListaMapas
+{
+    public List<MapasNombres> mapas;
 }
 
 public class ListaMapasController : MonoBehaviour
 {
     public string apiUrlBase = "http://localhost:8000/"; // URL de la APi
-    public MapasNombres listaMapasNombres; //Listado de nombres de mapas obtenidos de la API.
+    public ListaMapas listaMapasNombres; //Listado de nombres de mapas obtenidos de la API.
 
     [Header("Elementos UI")]
     public GameObject panelListado;
@@ -24,9 +31,6 @@ public class ListaMapasController : MonoBehaviour
     public Image imagenBoton;
 
     public VisorController visorController;
-
-
-
 
     private MapaFilaItemUI filaSeleccionada;
     private Color defaultColor = new Color32(0x1F, 0x1F, 0x1F, 0xFF); //1F1F1F
@@ -63,7 +67,7 @@ public class ListaMapasController : MonoBehaviour
         ventanaCanvasGroup.blocksRaycasts = true;
 
         //Evitamos cargar continuamente la lista de mapa haciendo llamadas a la API cada vez que se abre el listado, se usará un botón de actualizar para hacerlo manualmente.
-        if (listaMapasNombres.images.Count == 0)
+        if (listaMapasNombres.mapas.Count == 0)
         {
             StartCoroutine(ObtenerListadoMapas());
         } 
@@ -75,13 +79,23 @@ public class ListaMapasController : MonoBehaviour
         ventanaCanvasGroup.interactable = false;
         ventanaCanvasGroup.blocksRaycasts = false;
     }
+
+    public void SeleccionarFila(MapaFilaItemUI fila)
+    {
+        if (filaSeleccionada != null)
+            filaSeleccionada.EstablecerSeleccionado(false);
+
+        filaSeleccionada = fila;
+        filaSeleccionada.EstablecerSeleccionado(true);
+    }
+
     /*
      * Carga el listado de nombres llamando a la API y mostrando
      * la lista de nombres de todos los mapas
      */
     IEnumerator ObtenerListadoMapas()
     {
-        using (UnityWebRequest www = UnityWebRequest.Get(apiUrlBase+"images"))
+        using (UnityWebRequest www = UnityWebRequest.Get(apiUrlBase+"mapas"))
         {
             yield return www.SendWebRequest();
 
@@ -92,7 +106,8 @@ public class ListaMapasController : MonoBehaviour
             }
 
             string json = www.downloadHandler.text;
-            listaMapasNombres = JsonUtility.FromJson<MapasNombres>(json);
+            string jsonWrapped = "{\"mapas\":" + json + "}";
+            listaMapasNombres = JsonUtility.FromJson<ListaMapas>(jsonWrapped);
 
             // Eliminar filas antiguos si se vuelven a cargar los mapas.
             foreach (Transform child in contenedorFila)
@@ -103,12 +118,12 @@ public class ListaMapasController : MonoBehaviour
             {
                 bool primeraFila = true;
 
-                foreach (var nombre in listaMapasNombres.images)
+                foreach (var mapaActual in listaMapasNombres.mapas)
                 {
                     GameObject filaGO = Instantiate(filaMapaPrefab, contenedorFila);
                     var itemUI = filaGO.GetComponent<MapaFilaItemUI>();
 
-                    itemUI.Inicializar(nombre, this);
+                    itemUI.Inicializar(mapaActual.nombre, mapaActual.id, this);
 
                     if (primeraFila)
                     {
@@ -124,22 +139,13 @@ public class ListaMapasController : MonoBehaviour
         }
     }
 
-    public void SeleccionarFila(MapaFilaItemUI fila)
-    {
-        if (filaSeleccionada != null)
-            filaSeleccionada.EstablecerSeleccionado(false);
-
-        filaSeleccionada = fila;
-        filaSeleccionada.EstablecerSeleccionado(true);
-    }
-
     /**
      * Obtiene el mapa y sus elementos del mapa pasado por parámetro,
      * llama a la API para obtener el mapa y muestra el mapa en el visor.
      */
-    public IEnumerator CargarMapaDesdeAPI(string nombre)
+    public IEnumerator CargarMapaDesdeAPI(string idMapa)
     {
-        string urlImagen = $"{apiUrlBase}image/{nombre}";
+        string urlImagen = $"{apiUrlBase}mapas/{idMapa}";
 
         using (UnityWebRequest www = UnityWebRequest.Get(urlImagen))
         {
@@ -152,59 +158,10 @@ public class ListaMapasController : MonoBehaviour
             }
 
             string json = www.downloadHandler.text;
-            MapaData mapa = JsonUtility.FromJson<MapaData>(json);
+            MapaAPI mapa = JsonUtility.FromJson<MapaAPI>(json);
 
-            // Convertir Base64 a textura
-            byte[] imageBytes = Convert.FromBase64String(mapa.image_base64);
-            Texture2D textura = new Texture2D(2, 2); // Tamaño temporal, se ajustará
-            textura.LoadImage(imageBytes);
-
-            visorController.CargarMapaDesdeLista(textura);
-            visorController.mapaNombreCargado = nombre;
+            visorController.ProcesarMapaAPI(mapa);
             OcultarPanel();
         }
-    }
-
-    public void GuardarMapaEnBD()
-    {
-        //Tenemos un marca cargado y no está en la lista que hemos obtenido de la API.
-        if (visorController.hayMapaCargado()
-                && !listaMapasNombres.images.Contains(visorController.mapaNombreCargado))
-        {
-            StartCoroutine(GuardarMapaCoroutine((Texture2D) visorController.mapaImagenCargada.texture));
-        }
-    }
-
-    private IEnumerator GuardarMapaCoroutine(Texture2D textura)
-    {
-        string url = $"{apiUrlBase}upload"; // Sustituye con la URL real
-
-        string base64 = ConvertirImagenABase64(textura);
-
-        // Crear la solicitud POST
-        UnityWebRequest www = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST);
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(base64);
-
-        www.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        www.downloadHandler = new DownloadHandlerBuffer();
-        www.SetRequestHeader("Content-Type", "text/plain"); // o application/octet-stream si tu API lo requiere
-
-        yield return www.SendWebRequest();
-
-        if (www.result != UnityWebRequest.Result.Success)
-        {
-            Debug.LogError("Error al guardar el mapa: " + www.error);
-        }
-        else
-        {
-            Debug.Log("Mapa guardado correctamente en la base de datos.");
-        }
-        
-    }
-
-    private string ConvertirImagenABase64(Texture2D textura)
-    {
-        byte[] bytes = textura.EncodeToPNG(); // O EncodeToJPG()
-        return Convert.ToBase64String(bytes);
-    }
+    }    
 }

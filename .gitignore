@@ -95,3 +95,5 @@ RollGrid_backend/salida/map_cuadricula.json
 RollGrid_backend/start.bat
 RollGrid/.vs/RollGrid/FileContentIndex/3764388d-f94e-4b5f-b27d-562bf5d2a085.vsidx
 RollGrid/.vs/RollGrid/FileContentIndex/3764388d-f94e-4b5f-b27d-562bf5d2a085.vsidx
+/RollGrid_backend/venv_311
+/RollGrid_backend_oldversion

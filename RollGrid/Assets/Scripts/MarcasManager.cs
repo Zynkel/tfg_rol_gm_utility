@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -18,9 +19,9 @@ public class MarcasManager : MonoBehaviour
     {
         iconosPorTipo = new Dictionary<TipoMarca, Sprite>
         {
-            { TipoMarca.Enemigo, iconoEnemigo },
-            { TipoMarca.Tesoro, iconoTesoro },
-            { TipoMarca.Puerta, iconoPuerta }
+            { TipoMarca.enemigo, iconoEnemigo },
+            { TipoMarca.tesoro, iconoTesoro },
+            { TipoMarca.puerta, iconoPuerta }
         };
     }
 
@@ -29,13 +30,30 @@ public class MarcasManager : MonoBehaviour
         return iconosPorTipo[tipo];
     }
 
+    public Sprite GetIconoPorNombreTipo(string tipoNombre)
+    {
+        if (Enum.TryParse<TipoMarca>(tipoNombre.ToLower(), out TipoMarca tipo))
+        {
+            if (iconosPorTipo.TryGetValue(tipo, out Sprite sprite))
+                return sprite;
+            else
+                Debug.LogWarning($"No hay sprite asignado al tipo '{tipo}'");
+        }
+        else
+        {
+            Debug.LogWarning($"Tipo de marca desconocido: '{tipoNombre}'");
+        }
+
+        return iconoEnemigo; // sprite genérico (cambiar por un signo de ? u otra cosa)
+    }
+
     public List<TMP_Dropdown.OptionData> ObtenerOpcionesTipoMarca()
     {
         List<TMP_Dropdown.OptionData> opcionesTipo = new List<TMP_Dropdown.OptionData>
         {
-            new TMP_Dropdown.OptionData(TipoMarca.Enemigo.ToString(), GetIconoPorTipo(TipoMarca.Enemigo), Color.white),
-            new TMP_Dropdown.OptionData(TipoMarca.Tesoro.ToString(), GetIconoPorTipo(TipoMarca.Tesoro), Color.white),
-            new TMP_Dropdown.OptionData(TipoMarca.Puerta.ToString(), GetIconoPorTipo(TipoMarca.Puerta), Color.white)
+            new TMP_Dropdown.OptionData(TipoMarca.enemigo.ToString(), GetIconoPorTipo(TipoMarca.enemigo), Color.white),
+            new TMP_Dropdown.OptionData(TipoMarca.tesoro.ToString(), GetIconoPorTipo(TipoMarca.tesoro), Color.white),
+            new TMP_Dropdown.OptionData(TipoMarca.puerta.ToString(), GetIconoPorTipo(TipoMarca.puerta), Color.white)
         };
 
         return opcionesTipo;

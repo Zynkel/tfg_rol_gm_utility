@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 public enum TipoMarca
 {
-    Enemigo,
-    Tesoro,
-    Puerta
+    enemigo,
+    tesoro,
+    puerta
 }
 
 public enum EstadoMarca
@@ -25,6 +25,7 @@ public class MarcaUI : MonoBehaviour, IPointerClickHandler
     [TextArea(2, 5)] public string notas;
     public MarcaFilaUI filaAsociada;
     public string mapaVinculado;
+    public string estadoVinculado;
 
     public MarcasManager managerMarcas;
     public MenuContextualController menuContextual;
