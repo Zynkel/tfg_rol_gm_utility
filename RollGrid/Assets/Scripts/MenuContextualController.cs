@@ -31,7 +31,7 @@ public class MenuContextualController : MonoBehaviour
         botonVerDetalles.onClick.RemoveAllListeners();
         botonVerDetalles.onClick.AddListener(() =>
         {
-            detalleController.MostrarDetalles(marca);
+            OnBotonDetalles(marca);
         });
 
         // Habilitar o deshabilitar el botón de viajar."
@@ -44,7 +44,7 @@ public class MenuContextualController : MonoBehaviour
             botonViajar.onClick.AddListener(() =>
             {
                 //Llamar al controlador para cargar mapa
-                StartCoroutine(listaMapasController.CargarMapaDesdeAPI(marcaActual.mapaVinculado));
+                CargarMapaDesdePuerta(marcaActual.mapaVinculado, marcaActual.estadoVinculado);
                 Cerrar();
             });
         }
@@ -61,6 +61,28 @@ public class MenuContextualController : MonoBehaviour
         //Funcionalidad botón cerrar del menú.
         botonCerrar.onClick.RemoveAllListeners();
         botonCerrar.onClick.AddListener(Cerrar);
+    }
+
+    public void OnBotonDetalles(GameObject marca)
+    {
+        if (marca != null)
+        {
+            var modo = ModoAplicacionController.Instancia.ModoActual;
+            detalleController.MostrarDetalles(marca, modo);
+        }
+    }
+
+    public void CargarMapaDesdePuerta(string mapaId, string estadoId)
+    {
+        // 1. Comprobar que los IDs son válidos
+        if (string.IsNullOrEmpty(mapaId))
+        {
+            Debug.LogError("No se ha especificado un mapa vinculado para esta puerta.");
+            return;
+        }
+
+        // 2. Iniciar la carga del mapa desde la API
+        StartCoroutine(visorController.CargarMapaYEstado(mapaId, estadoId));
     }
 
     public void Cerrar()

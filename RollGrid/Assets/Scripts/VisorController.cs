@@ -4,11 +4,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using static ListaMarcasUI;
 
@@ -26,14 +28,12 @@ public class VisorController : MonoBehaviour, IDropHandler
     public RectTransform contenedorMarcas;
     public RawImage mapaImagenCargada;
     public string mapaNombreCargado;
+    public GameObject fondoVisor;
     public GameObject prefabMarcaColocada;
     public GameObject cuadricula;
     public Image botonCuadricula; //Botón para cambiar su color.
     public GridOverlay gridOverlay;
     public TMP_Dropdown modoAplicacionDropdown;
-
-    //Estado actual de la aplicación.
-    public ModoAplicacion modoActual = ModoAplicacion.Edicion;
 
     //Objeto mapa actual.
     public MapaAPI mapaCargado;
@@ -44,6 +44,7 @@ public class VisorController : MonoBehaviour, IDropHandler
     public float zoomStep = 0.1f;
     public ScrollRect scrollRect;
 
+    public bool permitirAñadirMarcas = true; 
     private bool arrastrandoConRueda = false;
     private Vector2 ultimaPosicionMouse;
     private bool cuadriculaVisible = false;
@@ -55,23 +56,79 @@ public class VisorController : MonoBehaviour, IDropHandler
     private Color defaultColor = new Color32(0x1F, 0x1F, 0x1F, 0xFF); //1F1F1F
     private Color pressedColor = new Color32(0x3F, 0x3F, 0x3F, 0xFF); //3F3F3F
 
-    public enum ModoAplicacion
-    {
-        Edicion = 0,
-        Visor = 1
-    }
-
     void Start()
     {
         escalaOriginal = contenedorMarcas.localScale;
-        modoAplicacionDropdown.onValueChanged.AddListener(OnModoSeleccionado);
-        modoAplicacionDropdown.SetValueWithoutNotify((int)modoActual);
+
+        // Suscribirse al cambio del dropdown
+        if (modoAplicacionDropdown != null)
+        {
+            modoAplicacionDropdown.onValueChanged.AddListener(OnModoDropdownCambiado);
+        }
     }
 
-    void OnModoSeleccionado(int index)
+    private void OnDestroy()
     {
-        modoActual = (ModoAplicacion)index;
-        ActualizarModoAplicacion();
+        if (modoAplicacionDropdown != null)
+        {
+            modoAplicacionDropdown.onValueChanged.RemoveListener(OnModoDropdownCambiado);
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (ModoAplicacionController.Instancia != null)
+        {
+            ModoAplicacionController.Instancia.OnModoCambiado += OnModoCambiado;
+            // Aplicar el modo actual por si ya estaba en uno concreto
+            OnModoCambiado(ModoAplicacionController.Instancia.ModoActual);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (ModoAplicacionController.Instancia != null)
+        {
+            ModoAplicacionController.Instancia.OnModoCambiado -= OnModoCambiado;
+        }
+    }
+
+    private void OnModoCambiado(ModoAplicacion nuevoModo)
+    {
+        bool esJuego = nuevoModo == ModoAplicacion.Juego;
+        permitirAñadirMarcas = !esJuego;
+        Debug.Log("Visor ajustado a modo: " + nuevoModo);
+
+        if (contenedorMarcas != null)
+        {
+            var marcas = contenedorMarcas.GetComponentsInChildren<MarcaColocada>(true);
+            foreach (var marca in marcas)
+            {
+                // Filtrar visibilidad
+                if (esJuego)
+                {
+                    MarcaUI marcaActualUI = marca.GetComponent<MarcaUI>();
+                    bool mostrar = marcaActualUI.estado == EstadoMarca.Activo || marcaActualUI.estado == EstadoMarca.Inactivo;
+                    marca.ActualizarEstiloVisual();
+                    marca.gameObject.SetActive(mostrar);
+                }
+                else
+                {
+                    marca.gameObject.SetActive(true);
+                }
+            }
+        }
+    }
+
+    private void OnModoDropdownCambiado(int index)
+    {
+        // Suponiendo que el index 0 = Edicion, 1 = Juego
+        ModoAplicacion nuevoModo = (index == 0) ? ModoAplicacion.Edicion : ModoAplicacion.Juego;
+
+        // Cambiar el modo en el controlador central
+        ModoAplicacionController.Instancia.CambiarModo(nuevoModo);
+
+        Debug.Log("Dropdown cambió a: " + nuevoModo);
     }
 
     void Update()
@@ -100,6 +157,10 @@ public class VisorController : MonoBehaviour, IDropHandler
                 CanvasGroup cg = panelDetalles.GetComponent<CanvasGroup>();
                 cg.interactable = true;
                 cg.blocksRaycasts = true;
+
+
+                //Volvemos al cursor normal
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
             }
         }
 
@@ -149,7 +210,7 @@ public class VisorController : MonoBehaviour, IDropHandler
     }
     public void OnDrop(PointerEventData eventData)
     {
-        if (mapaImagenCargada.texture != null)
+        if (mapaImagenCargada.texture != null && permitirAñadirMarcas)
         {
             GameObject marca = eventData.pointerDrag;
 
@@ -169,28 +230,6 @@ public class VisorController : MonoBehaviour, IDropHandler
             guardarEstadoUI.Inicializar(this, mapaCargado);
         }
     }
-
-    private void ActualizarModoAplicacion()
-    {
-        // Ocultar o mostrar marcas invisibles
-        MarcaColocada[] marcas = FindObjectsOfType<MarcaColocada>();
-        foreach (var marca in marcas)
-        {
-            bool esVisible = marca.marcaUI.estado != EstadoMarca.Oculto;
-
-            // En modo visor: solo mostrar si está activa y visible
-            marca.gameObject.SetActive(
-                modoActual == ModoAplicacion.Edicion || esVisible
-            );
-
-            // También puedes bloquear interacciones aquí si quieres
-            //marca.marcaUI.SetInteractable(modoActual == ModoAplicacion.Edicion);
-        }
-
-        // UI específica (desactivar paneles de edición, arrastrar, menús contextuales...)
-        //panelDetalles.SetActive(modoActual == ModoAplicacion.Edicion);
-    }
-
 
     //Creación y gestión de marcas.
     public void crearMarca(MarcaItemUI marcaDropped)
@@ -232,22 +271,6 @@ public class VisorController : MonoBehaviour, IDropHandler
         }
     }   
 
-    //Carga de imagen
-    public void CargarImagenDesdeArchivo()
-    {
-        var extensiones = new[] {
-            new ExtensionFilter("Imagenes", "png", "jpg", "jpeg")
-        };
-
-        // Abre el diálogo de selección de archivo
-        string[] paths = StandaloneFileBrowser.OpenFilePanel("Selecciona un mapa", "", extensiones, false);
-
-        if (paths.Length > 0 && File.Exists(paths[0]))
-        {            
-            StartCoroutine(CargarImagen(paths[0]));
-        }
-    }
-
     /**
      * Procesamiento y gestión del mapa.
      */
@@ -260,8 +283,9 @@ public class VisorController : MonoBehaviour, IDropHandler
             byte[] bytes = Convert.FromBase64String(mapa.imagen_base64);
             if (textura.LoadImage(bytes))
             {
-                mapaImagenCargada.texture = textura;
-                mapaImagenCargada.SetNativeSize();
+    
+                mapaImagenCargada.texture = textura;    
+                //mapaImagenCargada.SetNativeSize();
 
                 LimpiarMarcas();
             }
@@ -343,54 +367,61 @@ public class VisorController : MonoBehaviour, IDropHandler
                 {
                     EstadoMapa estado = mapa.estados[indiceSeleccionado.Value];
 
-                    foreach (ObjetoMapa obj in estado.objetos)
+                    if (indiceSeleccionado > 0)
                     {
-                        // Cargar solo si hay posición
-                        if (obj.posicion == null) continue;
-
-                        // Instanciar prefab de marca
-                        GameObject marcaGO = Instantiate(prefabMarcaColocada, contenedorMarcas);
-                        MarcaColocada marca = marcaGO.GetComponent<MarcaColocada>();
-
-                        // Determinar posición relativa en UI
-                        RectTransform rt = marcaGO.GetComponent<RectTransform>();
-                        float anchoMapa = mapaImagenCargada.texture.width;
-                        float altoMapa = mapaImagenCargada.texture.height;
-
-                        float xUI = (obj.posicion.x / anchoMapa) * mapaImagenCargada.rectTransform.rect.width;
-                        float yUI = (obj.posicion.y / altoMapa) * mapaImagenCargada.rectTransform.rect.height;
-
-                        // Ajuste para que (0,0) esté en la esquina inferior izquierda:
-                        Vector2 posicionLocal = new Vector2(xUI, yUI);
-                        Vector2 posicionOffset = posicionLocal - (mapaImagenCargada.rectTransform.rect.size / 2f);
-
-                        rt.anchoredPosition = posicionOffset;
-
-                        //Obtener TipoMarca
-                        if (Enum.TryParse<TipoMarca>(obj.tipo.ToLower(), out TipoMarca tipo))
+                        ColocarMarcasEnMapas(estado.objetos);
+                    } 
+                    else
+                    {
+                        foreach (ObjetoMapa obj in estado.objetos)
                         {
-                            Debug.Log($"Tipo válido: {tipo}"); // Ejemplo: "enemigo"
+                            // Cargar solo si hay posición
+                            if (obj.posicion == null) continue;
+
+                            // Instanciar prefab de marca
+                            GameObject marcaGO = Instantiate(prefabMarcaColocada, contenedorMarcas);
+                            MarcaColocada marca = marcaGO.GetComponent<MarcaColocada>();
+
+                            // Determinar posición relativa en UI
+                            RectTransform rt = marcaGO.GetComponent<RectTransform>();
+                            float anchoMapa = mapaImagenCargada.texture.width;
+                            float altoMapa = mapaImagenCargada.texture.height;
+
+                            float xUI = (obj.posicion.x / anchoMapa) * mapaImagenCargada.rectTransform.rect.width;
+                            float yUI = (obj.posicion.y / altoMapa) * mapaImagenCargada.rectTransform.rect.height;
+
+                            // Ajuste para que (0,0) esté en la esquina inferior izquierda:
+                            Vector2 posicionLocal = new Vector2(xUI, yUI);
+                            Vector2 posicionOffset = posicionLocal - (mapaImagenCargada.rectTransform.rect.size / 2f);
+
+                            rt.anchoredPosition = posicionOffset;
+
+                            //Obtener TipoMarca
+                            if (Enum.TryParse<TipoMarca>(obj.tipo.ToLower(), out TipoMarca tipo))
+                            {
+                                Debug.Log($"Tipo válido: {tipo}"); // Ejemplo: "enemigo"
+                            }
+
+                            // Obtener el sprite según su tipo.
+                            Sprite icono = marcasManager.GetIconoPorTipo(tipo); // este método debe existir
+                            string nombre = obj.tipo;
+
+                            // Inicializar la marca
+                            marca.Inicializar(
+                                nombre,
+                                tipo,
+                                icono,
+                                marcasManager,
+                                menuContextualController,
+                                rt.anchoredPosition,
+                                prefabMarcaColocada.transform
+                            );
+
+                            //Crear fila en el navegador
+                            navegadorManager.AnyadirMarca(marca.icono, marca.nombre, marcaGO);
+
                         }
-
-                        // Obtener el sprite según su tipo.
-                        Sprite icono = marcasManager.GetIconoPorTipo(tipo); // este método debe existir
-                        string nombre = obj.tipo;
-
-                        // Inicializar la marca
-                        marca.Inicializar(
-                            nombre,
-                            tipo,
-                            icono,
-                            marcasManager,
-                            menuContextualController,
-                            rt.anchoredPosition,
-                            prefabMarcaColocada.transform
-                        );
-
-                        //Crear fila en el navegador
-                        navegadorManager.AnyadirMarca(marca.icono, marca.nombre, marcaGO);
-
-                    }
+                    }                    
                 }
                 else
                 {
@@ -403,6 +434,109 @@ public class VisorController : MonoBehaviour, IDropHandler
         mapaNombreCargado = mapa.nombre;
 
         Debug.Log("Mapa procesado: " + mapa.nombre);
+    }
+
+    public IEnumerator CargarMapaYEstado(string mapaId, string estadoId)
+    {
+        // Llamada a tu API para obtener datos del mapa por ID
+        using (UnityWebRequest www = UnityWebRequest.Get($"{apiUrlBase}mapas/{mapaId}"))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error al cargar el mapa desde puerta: " + www.error);
+                yield break;
+            }
+
+            // Parsear la respuesta
+            MapaAPI mapa = JsonUtility.FromJson<MapaAPI>(www.downloadHandler.text);
+
+            // Cargar la imagen desde base64
+            if (!string.IsNullOrEmpty(mapa.imagen_base64))
+            {
+                Texture2D textura = new Texture2D(2, 2);
+                byte[] bytes = Convert.FromBase64String(mapa.imagen_base64);
+                if (textura.LoadImage(bytes))
+                {
+
+                    mapaImagenCargada.texture = textura;
+                    //mapaImagenCargada.SetNativeSize();
+
+                    LimpiarMarcas();
+                }
+                else
+                {
+                    Debug.LogWarning("No se pudo cargar la imagen del mapa.");
+                }
+            }
+
+            // Si se ha especificado un estado, cargarlo
+            if (!string.IsNullOrEmpty(estadoId))
+            {
+                EstadoMapa estado = mapa.estados.FirstOrDefault(e => e.id == estadoId);
+                if (estado != null)
+                {
+                    ColocarMarcasEnMapas(estado.objetos);
+                }
+                else
+                {
+                    Debug.LogWarning("El estado vinculado no se encontró en este mapa.");
+                }
+            }
+        }
+    }
+
+    private void ColocarMarcasEnMapas(List<ObjetoMapa> listaObjetos)
+    {
+        float anchoMapaUI = mapaImagenCargada.rectTransform.rect.width;
+        float altoMapaUI = mapaImagenCargada.rectTransform.rect.height;
+
+        foreach (ObjetoMapa obj in listaObjetos)
+        {
+            if (obj.posicion == null) continue;
+
+            GameObject marcaGO = Instantiate(prefabMarcaColocada, contenedorMarcas);
+            MarcaColocada marca = marcaGO.GetComponent<MarcaColocada>();
+
+            RectTransform rt = marcaGO.GetComponent<RectTransform>();
+
+            // Convertir coordenadas relativas (0-1) a posición en UI
+            float xUI = obj.posicion.x * anchoMapaUI;
+            float yUI = obj.posicion.y * altoMapaUI;
+
+            // Ajustar para que el origen (0,0) esté en el centro del mapa
+            Vector2 posicionOffset = new Vector2(
+                xUI - (anchoMapaUI / 2f),
+                yUI - (altoMapaUI / 2f)
+            );
+
+            rt.anchoredPosition = posicionOffset;
+
+            // Obtener tipo de marca
+            TipoMarca tipo = TipoMarca.objeto;
+            if (Enum.TryParse<TipoMarca>(obj.tipo, true, out var tipoParseado))
+            {
+                tipo = tipoParseado;
+            }
+
+            // Obtener sprite del tipo
+            Sprite icono = marcasManager.GetIconoPorTipo(tipo);
+
+            // Inicializar marca
+            marca.Inicializar(
+                obj.tipo,
+                tipo,
+                icono,
+                marcasManager,
+                menuContextualController,
+                rt.anchoredPosition,
+                prefabMarcaColocada.transform
+            );
+
+            // Añadir al navegador
+            navegadorManager.AnyadirMarca(marca.icono, marca.nombre, marcaGO);
+        }
     }
 
     public void GuardarEstadoDesdeUI(MapaAPI mapa, string nombreEstado)
@@ -462,22 +596,22 @@ public class VisorController : MonoBehaviour, IDropHandler
         {
             Vector2 posUI = ((RectTransform)marca.transform).anchoredPosition;
 
-            // Convertir a coordenadas relativas al mapa original
-            float xMapa = posUI.x + ancho / 2f;
-            float yMapa = posUI.y + alto / 2f;
-
+            // Convertir a coordenadas relativas (0-1)
+            float xRel = (posUI.x + ancho / 2f) / ancho;
+            float yRel = (posUI.y + alto / 2f) / alto;
 
             ObjetoMapa objeto = new ObjetoMapa();
             objeto.tipo = marca.tipo.ToString().ToLower();
-            objeto.descripcion = null; //Se rellenará a futuro.
-            objeto.contenido = null; //Se rellenará a futuro.
-            objeto.estado = null; //Se rellenará más adelante.
+            objeto.descripcion = null;
+            objeto.contenido = null;
+            objeto.estado = null;
             objeto.posicion = new Posicion
             {
-                x = Mathf.RoundToInt(xMapa),
-                y = Mathf.RoundToInt(yMapa)
+                x = xRel,
+                y = yRel
             };
-            objeto.bounding_box = null; //Se rellena a futuro.
+
+            objeto.bounding_box = null; 
             objeto.destino_mapa_id = marca.marcaUI.mapaVinculado;
             objeto.destino_estado_id = null;
 
@@ -526,26 +660,6 @@ public class VisorController : MonoBehaviour, IDropHandler
             cuadricula.SetActive(false);
             cuadriculaVisible = false;
             botonCuadricula.color = defaultColor;
-        }
-    }
-
-    private System.Collections.IEnumerator CargarImagen(string path)
-    {
-        // Cargar archivo como textura
-        var www = new WWW("file://" + path);
-        yield return www;
-
-        mapaNombreCargado = Path.GetFileName(path); // Solo el nombre del archivo
-
-        Texture2D tex = www.texture;
-        if (tex != null)
-        {
-            mapaImagenCargada.texture = tex;
-            LimpiarMarcas();
-        }
-        else
-        {
-            Debug.LogError("Error al cargar la imagen.");
         }
     }
 }

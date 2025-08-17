@@ -9,6 +9,16 @@ public class MarcaColocada : MonoBehaviour
     public MarcaUI marcaUI;
 
     private RectTransform rectTransform;
+    private CanvasGroup canvasGroup;
+
+    private void Awake()
+    {
+        canvasGroup = GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        }
+    }
 
     public void Inicializar(string nombre, TipoMarca tipo, Sprite icono, MarcasManager marcasManager, MenuContextualController menuContextual, Vector2 posicionPantalla, Transform canvasTransform)
     {
@@ -23,7 +33,7 @@ public class MarcaColocada : MonoBehaviour
 
         // Tamaño y posición
         rectTransform = GetComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2(40, 40);
+        rectTransform.sizeDelta = new Vector2(50, 50);
 
         // Convertir posición pantalla a local en el canvas
         Vector2 localPos;
@@ -37,5 +47,17 @@ public class MarcaColocada : MonoBehaviour
         // Añadir y configurar MarcaUI
         marcaUI = gameObject.GetComponent<MarcaUI>();
         marcaUI.Inicializar(nombre, tipo, icono, marcasManager, menuContextual);
+    }
+
+    public void ActualizarEstiloVisual()
+    {
+        if (marcaUI.estado == EstadoMarca.Inactivo)
+        {
+            canvasGroup.alpha = 0.7f; // más transparente
+        }
+        else
+        {
+            canvasGroup.alpha = 1f; // opaco normal
+        }
     }
 }

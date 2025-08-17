@@ -41,7 +41,7 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
             scrollbar.gameObject.SetActive(false);
     }
 
-    public void MostrarDetalles(GameObject marca)
+    public void MostrarDetalles(GameObject marca, ModoAplicacion modo)
     {
         panel.SetActive(true);
         InicializarDropdowns();
@@ -58,8 +58,15 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
 
         inputNotas.text = marcaUI.notas;
 
+        // Aplicar bloqueo según modo
+        bool esJuego = (modo == ModoAplicacion.Juego);
+        inputNombre.interactable = !esJuego;
+        dropdownTipo.interactable = !esJuego;
+        inputNotas.interactable = !esJuego;
+        botonRecolocar.interactable = !esJuego;
+
         // Activar el botón de vincular solo si es de tipo "puerta"
-        botonVincular.interactable = (marcaUI.tipo == TipoMarca.puerta);
+        botonVincular.interactable = (marcaUI.tipo == TipoMarca.puerta) && !esJuego;
     }
 
     public void InicializarDropdowns()
@@ -114,6 +121,9 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
 
         MarcaUI marcaUI = marcaActual.GetComponent<MarcaUI>();
         visorController.MoverMarca(marcaUI);
+
+        //Volvemos al cursor normal
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
     public void CambiarTipoMarca(int index)
@@ -136,6 +146,8 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
             && marcaActual.GetComponent<MarcaFilaUI>() == null) return;
 
         MarcaFilaUI marcaFila = marcaActual.GetComponent<MarcaFilaUI>();
+
+
     }
 
     //Comprueba si el tipo de la marca es de Puerta, en caso afirmativo activa el botón Vincular.

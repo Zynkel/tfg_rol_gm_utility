@@ -60,7 +60,7 @@ public class FiltroNavegadorController : MonoBehaviour
     {
         if (!dropdownsInicializados)
         {
-            var opcionesTipo = new List<string> { "Todos", "Enemigo", "Tesoro", "Puerta" };
+            var opcionesTipo = new List<string> { "Todos", "Enemigo", "Tesoro", "Puerta", "Objeto" };
             dropdownTipo.ClearOptions();
             dropdownTipo.AddOptions(opcionesTipo);
 

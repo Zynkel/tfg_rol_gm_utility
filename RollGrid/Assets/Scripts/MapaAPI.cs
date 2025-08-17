@@ -50,8 +50,8 @@ public class ObjetoMapa
 [Serializable]
 public class Posicion
 {
-    public int x;
-    public int y;
+    public float x;
+    public float y;
 }
 
 [Serializable]

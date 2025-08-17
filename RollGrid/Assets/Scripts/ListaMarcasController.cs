@@ -26,6 +26,7 @@ public class ListaMarcasUI : MonoBehaviour, IDragHandler, IBeginDragHandler
     public Sprite iconoEnemigo;
     public Sprite iconoTesoro;
     public Sprite iconoPuerta;
+    public Sprite iconoObjeto;
 
     public CanvasGroup ventanaCanvasGroup;
     public Image imagenBoton;
@@ -47,6 +48,7 @@ public class ListaMarcasUI : MonoBehaviour, IDragHandler, IBeginDragHandler
             new Marca("Enemigo", iconoEnemigo, TipoMarca.enemigo),
             new Marca("Tesoro", iconoTesoro, TipoMarca.tesoro),
             new Marca("Puerta", iconoPuerta, TipoMarca.puerta),
+            new Marca("Objeto", iconoObjeto, TipoMarca.objeto),
         };
 
         // Por cada marca se crea el objeto MarcaItemUI para asignar texto e imagen.

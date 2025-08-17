@@ -7,10 +7,10 @@ using System;
 public class MapaFilaItemUI : MonoBehaviour, IPointerClickHandler
 {
     public TextMeshProUGUI textoNombreMapa;
+    public string nombreMapa;
+    public string idMapa;
 
     private ListaMapasController mapasController;
-    private string nombreMapa;
-    private string idMapa;
     private float ultimoClickTime;
     private const float tiempoDobleClick = 0.3f;
     private Color colorSeleccionado = new Color(0.3f, 0.3f, 0.3f);// Seleccionado azulado

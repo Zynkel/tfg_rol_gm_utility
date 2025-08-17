@@ -4,9 +4,10 @@ using UnityEngine.UI;
 
 public enum TipoMarca
 {
-    enemigo,
-    tesoro,
-    puerta
+    objeto, //Tipo 0 genérico
+    enemigo, //1
+    tesoro, //2
+    puerta //3
 }
 
 public enum EstadoMarca

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using static UnityEngine.Analytics.IAnalytic;
 
 [System.Serializable]
 public class MapasNombres
@@ -89,12 +90,29 @@ public class ListaMapasController : MonoBehaviour
         filaSeleccionada.EstablecerSeleccionado(true);
     }
 
+    public void OnBotonBorrarMapa()
+    {
+        if (filaSeleccionada == null)
+        {
+            Debug.LogWarning("No hay ningún mapa seleccionado.");
+            return;
+        }
+
+        StartCoroutine(BorrarMapa(filaSeleccionada.idMapa));
+    }
+
     /*
      * Carga el listado de nombres llamando a la API y mostrando
      * la lista de nombres de todos los mapas
      */
-    IEnumerator ObtenerListadoMapas()
+    public IEnumerator ObtenerListadoMapas()
     {
+        // Vaciar el contenido actual si hay
+        foreach (Transform hijo in contenedorFila)
+        {
+            Destroy(hijo.gameObject);
+        }
+
         using (UnityWebRequest www = UnityWebRequest.Get(apiUrlBase+"mapas"))
         {
             yield return www.SendWebRequest();
@@ -163,5 +181,25 @@ public class ListaMapasController : MonoBehaviour
             visorController.ProcesarMapaAPI(mapa);
             OcultarPanel();
         }
-    }    
+    }
+
+
+
+    public IEnumerator BorrarMapa(string id)
+    {
+        string urlImagen = $"{apiUrlBase}mapas/{id}";
+        UnityWebRequest request = UnityWebRequest.Delete(urlImagen);
+        yield return request.SendWebRequest();
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Error borrando mapa: " + request.error);
+        }
+        else
+        {
+            Debug.Log("Mapa borrado correctamente");
+            StartCoroutine(ObtenerListadoMapas());
+        }
+    }
+
 }

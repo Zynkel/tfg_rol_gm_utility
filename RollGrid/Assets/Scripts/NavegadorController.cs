@@ -45,8 +45,8 @@ public class NavegadorController : MonoBehaviour
 
     public void AplicarFiltro(FiltroNavegador filtro) 
     {
-        string tipoSeleccionado = filtro.tipo.ToString();
-        string estadoSeleccionado = filtro.estado.ToString();
+        string tipoSeleccionado = filtro.tipo.ToString().ToLower();
+        string estadoSeleccionado = filtro.estado.ToString().ToLower();
         string nombreTexto = filtro.nombre.ToLower();
 
         foreach (var fila in listaFilasNavegador)
@@ -55,9 +55,9 @@ public class NavegadorController : MonoBehaviour
 
             bool coincideNombre = string.IsNullOrEmpty(nombreTexto) || marcaFilaActual.nombre.ToLower().Contains(nombreTexto);
 
-            bool coincideEstado = estadoSeleccionado == "Todos" || marcaFilaActual.estado.ToString() == estadoSeleccionado;
+            bool coincideEstado = estadoSeleccionado == "todos" || marcaFilaActual.estado.ToString() == estadoSeleccionado;
 
-            bool coincideTipo = tipoSeleccionado == "Todos" || marcaFilaActual.tipo.ToString() == tipoSeleccionado;
+            bool coincideTipo = tipoSeleccionado == "todos" || marcaFilaActual.tipo.ToString() == tipoSeleccionado;
 
             marcaFilaActual.gameObject.SetActive(coincideNombre && coincideEstado && coincideTipo);
             fila.gameObject.SetActive(coincideNombre && coincideEstado && coincideTipo);            

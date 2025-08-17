@@ -8,6 +8,7 @@ public class MarcasManager : MonoBehaviour
     public Sprite iconoEnemigo;
     public Sprite iconoTesoro;
     public Sprite iconoPuerta;
+    public Sprite iconoObjeto;
 
     public List<TipoMarca> tiposDisponibles;
 
@@ -19,9 +20,10 @@ public class MarcasManager : MonoBehaviour
     {
         iconosPorTipo = new Dictionary<TipoMarca, Sprite>
         {
+            { TipoMarca.objeto, iconoObjeto },
             { TipoMarca.enemigo, iconoEnemigo },
             { TipoMarca.tesoro, iconoTesoro },
-            { TipoMarca.puerta, iconoPuerta }
+            { TipoMarca.puerta, iconoPuerta }            
         };
     }
 
@@ -44,13 +46,15 @@ public class MarcasManager : MonoBehaviour
             Debug.LogWarning($"Tipo de marca desconocido: '{tipoNombre}'");
         }
 
-        return iconoEnemigo; // sprite genérico (cambiar por un signo de ? u otra cosa)
+        return iconoObjeto; // sprite genérico (cambiar por un signo de ? u otra cosa)
     }
 
     public List<TMP_Dropdown.OptionData> ObtenerOpcionesTipoMarca()
     {
         List<TMP_Dropdown.OptionData> opcionesTipo = new List<TMP_Dropdown.OptionData>
         {
+
+            new TMP_Dropdown.OptionData(TipoMarca.objeto.ToString(), GetIconoPorTipo(TipoMarca.objeto), Color.white),
             new TMP_Dropdown.OptionData(TipoMarca.enemigo.ToString(), GetIconoPorTipo(TipoMarca.enemigo), Color.white),
             new TMP_Dropdown.OptionData(TipoMarca.tesoro.ToString(), GetIconoPorTipo(TipoMarca.tesoro), Color.white),
             new TMP_Dropdown.OptionData(TipoMarca.puerta.ToString(), GetIconoPorTipo(TipoMarca.puerta), Color.white)
