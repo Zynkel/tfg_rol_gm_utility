@@ -44,13 +44,13 @@ def analizar_objetos(imagen_path: str) -> list:
         class_id = int(pred_classes[i])
         label = CLASSES[class_id] if class_id < len(CLASSES) else "objeto"
 
-        # Coordenadas del centro
         x = int((box[0] + box[2]) / 2)
         y = int((box[1] + box[3]) / 2)
 
         resultados.append({
             "tipo": label,
-            "posicion": {"x": x, "y": y}
+            "posicion": {"x": x, "y": y},
+            "visible": True 
         })
 
     return resultados

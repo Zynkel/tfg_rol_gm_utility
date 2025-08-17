@@ -9,7 +9,7 @@ def guardar_imagen_en_gridfs(file: UploadFile):
     imagen_id = fs.put(contenido, filename=file.filename, content_type=file.content_type)
     return imagen_id
 
-def extraer_celdas_desde_imagen(imagen_path: str) -> list | None:
+def extraer_info_cuadricula(imagen_path: str) -> dict | None:
     imagen = cv2.imread(imagen_path, cv2.IMREAD_GRAYSCALE)
     if imagen is None:
         return None
@@ -26,9 +26,9 @@ def extraer_celdas_desde_imagen(imagen_path: str) -> list | None:
 
     for linea in lineas:
         x1, y1, x2, y2 = linea[0]
-        if abs(y2 - y1) < 10:  
+        if abs(y2 - y1) < 10:
             horizontales.append(y1)
-        elif abs(x2 - x1) < 10:  
+        elif abs(x2 - x1) < 10:
             verticales.append(x1)
 
     if len(horizontales) < 2 or len(verticales) < 2:
@@ -37,9 +37,19 @@ def extraer_celdas_desde_imagen(imagen_path: str) -> list | None:
     horizontales = sorted(list(set(horizontales)))
     verticales = sorted(list(set(verticales)))
 
-    celdas = []
-    for i in range(len(verticales) - 1):
-        for j in range(len(horizontales) - 1):
-            celdas.append({"x": i, "y": j})
+    rows = len(horizontales) - 1
+    cols = len(verticales) - 1
+    cellHeight = np.median(np.diff(horizontales))
+    cellWidth = np.median(np.diff(verticales))
 
-    return celdas
+    offsetX = verticales[0]
+    offsetY = horizontales[0]
+
+    return {
+        "rows": int(rows),
+        "cols": int(cols),
+        "cellWidth": int(cellWidth),
+        "cellHeight": int(cellHeight),
+        "offsetX": int(offsetX),
+        "offsetY": int(offsetY)
+    }
