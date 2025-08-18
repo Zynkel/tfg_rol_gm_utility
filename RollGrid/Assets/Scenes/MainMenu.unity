@@ -1466,7 +1466,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.12156863, g: 0.12156863, b: 0.12156863, a: 1}
     m_HighlightedColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
@@ -7579,7 +7579,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
@@ -12906,7 +12906,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1445835969}
   m_HandleRect: {fileID: 1445835968}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -19265,7 +19265,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
@@ -26505,6 +26505,10 @@ MonoBehaviour:
   botonCuadricula: {fileID: 69242348}
   gridOverlay: {fileID: 1356442701}
   modoAplicacionDropdown: {fileID: 32700513}
+  botonMarcas: {fileID: 1422835644}
+  botonListado: {fileID: 513452756}
+  botonGuardar: {fileID: 1224445201}
+  botonCuadricular: {fileID: 69242347}
   mapaCargado:
     id: 
     nombre: 

@@ -62,6 +62,7 @@ public class DetalleMarcaController : MonoBehaviour, IDragHandler, IBeginDragHan
         bool esJuego = (modo == ModoAplicacion.Juego);
         inputNombre.interactable = !esJuego;
         dropdownTipo.interactable = !esJuego;
+        dropdownEstado.interactable = !esJuego;
         inputNotas.interactable = !esJuego;
         botonRecolocar.interactable = !esJuego;
 

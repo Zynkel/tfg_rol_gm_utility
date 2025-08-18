@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -17,6 +17,29 @@ public class MenuContextualController : MonoBehaviour
     public VisorController visorController;
     public DetalleMarcaController detalleController;
     private MarcaUI marcaActual;
+    private ModoAplicacion modo;
+
+    private void Start()
+    {
+        if (ModoAplicacionController.Instancia != null)
+        {
+            ModoAplicacionController.Instancia.OnModoCambiado += OnModoCambiado;
+            // Aplicar el modo actual por si ya estaba en uno concreto
+            OnModoCambiado(ModoAplicacionController.Instancia.ModoActual);
+        }            
+    }
+
+    private void OnDestroy()
+    {
+        if (ModoAplicacionController.Instancia != null)
+            ModoAplicacionController.Instancia.OnModoCambiado -= OnModoCambiado;
+    }
+
+    private void OnModoCambiado(ModoAplicacion nuevoModo)
+    {
+        if (marcaActual != null)
+            modo = nuevoModo;
+    }
 
     public void Mostrar(Vector2 posicionPantalla, GameObject marca)
     {
@@ -27,14 +50,46 @@ public class MenuContextualController : MonoBehaviour
         panel.GetComponent<CanvasGroup>().blocksRaycasts = true;
         panel.transform.position = posicionPantalla;
 
-        //Mostrar detalle de la marca.
-        botonVerDetalles.onClick.RemoveAllListeners();
-        botonVerDetalles.onClick.AddListener(() =>
+        if (modo == ModoAplicacion.Edicion) //Modo edición, se puede abrir editar y eliminar.
         {
-            OnBotonDetalles(marca);
-        });
+            // Mostrar opciones normales
+            if (botonVerDetalles != null) botonVerDetalles.gameObject.SetActive(true);
+            if (botonEliminar != null) botonEliminar.gameObject.SetActive(true);
 
-        // Habilitar o deshabilitar el bot�n de viajar."
+            //Mostrar detalle de la marca.
+            botonVerDetalles.onClick.RemoveAllListeners();
+            botonVerDetalles.onClick.AddListener(() =>
+            {
+                OnBotonDetalles(marca);
+            });
+
+            //Eliminar marca desde el menú contextual.
+            botonEliminar.onClick.RemoveAllListeners();
+            botonEliminar.onClick.AddListener(() =>
+            {
+                MarcaUI marcaUI = marca.GetComponent<MarcaUI>();
+                marcaUI.filaAsociada.EliminarMarca();
+                Cerrar();
+            });
+        }
+        else // Modo juego, detalles y eliminar desactivados, solo botón viajar si se cumple la condición.
+        {
+            if (marcaActual.tipo == TipoMarca.puerta && !string.IsNullOrEmpty(marcaActual.mapaVinculado))
+            {
+                // Solo mostrar viajar
+                if (botonVerDetalles != null) botonVerDetalles.gameObject.SetActive(false);
+                if (botonEliminar != null) botonEliminar.gameObject.SetActive(false);
+            }
+            else
+            {
+                // Ninguna acción disponible → cerrar menú
+                Cerrar();
+            }
+        }
+
+        
+
+        // Habilitar o deshabilitar el botón de viajar."
         bool puedeCambiar = marcaActual.tipo == TipoMarca.puerta && !string.IsNullOrEmpty(marcaActual.mapaVinculado);
         botonViajar.interactable = puedeCambiar;
 
@@ -47,18 +102,9 @@ public class MenuContextualController : MonoBehaviour
                 CargarMapaDesdePuerta(marcaActual.mapaVinculado, marcaActual.estadoVinculado);
                 Cerrar();
             });
-        }
+        }       
 
-        //Eliminar marca desde el men� contextual.
-        botonEliminar.onClick.RemoveAllListeners();
-        botonEliminar.onClick.AddListener(() =>
-        {
-            MarcaUI marcaUI = marca.GetComponent<MarcaUI>();
-            marcaUI.filaAsociada.EliminarMarca();
-            Cerrar();
-        });
-
-        //Funcionalidad bot�n cerrar del men�.
+        //Funcionalidad botón cerrar del menú.
         botonCerrar.onClick.RemoveAllListeners();
         botonCerrar.onClick.AddListener(Cerrar);
     }
@@ -74,7 +120,7 @@ public class MenuContextualController : MonoBehaviour
 
     public void CargarMapaDesdePuerta(string mapaId, string estadoId)
     {
-        // 1. Comprobar que los IDs son v�lidos
+        // 1. Comprobar que los IDs son válidos
         if (string.IsNullOrEmpty(mapaId))
         {
             Debug.LogError("No se ha especificado un mapa vinculado para esta puerta.");

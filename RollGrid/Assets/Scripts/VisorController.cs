@@ -34,6 +34,10 @@ public class VisorController : MonoBehaviour, IDropHandler
     public Image botonCuadricula; //Botón para cambiar su color.
     public GridOverlay gridOverlay;
     public TMP_Dropdown modoAplicacionDropdown;
+    public Button botonMarcas;
+    public Button botonListado;
+    public Button botonGuardar;
+    public Button botonCuadricular;
 
     //Objeto mapa actual.
     public MapaAPI mapaCargado;
@@ -101,10 +105,11 @@ public class VisorController : MonoBehaviour, IDropHandler
 
         if (contenedorMarcas != null)
         {
+            // Filtrar visibilidad marcas
             var marcas = contenedorMarcas.GetComponentsInChildren<MarcaColocada>(true);
             foreach (var marca in marcas)
             {
-                // Filtrar visibilidad
+
                 if (esJuego)
                 {
                     MarcaUI marcaActualUI = marca.GetComponent<MarcaUI>();
@@ -117,6 +122,22 @@ public class VisorController : MonoBehaviour, IDropHandler
                     marca.gameObject.SetActive(true);
                 }
             }
+        }
+
+        //Botones del menú.
+        if (esJuego)
+        {
+            botonCuadricular.interactable = false;
+            botonGuardar.interactable = false;
+            botonListado.interactable = false;
+            botonMarcas.interactable = false;
+        }
+        else
+        {
+            botonCuadricular.interactable = true;
+            botonGuardar.interactable = true;
+            botonListado.interactable = true;
+            botonMarcas.interactable = true;
         }
     }
 
