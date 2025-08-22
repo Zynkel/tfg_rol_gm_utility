@@ -131,6 +131,8 @@ public class VisorController : MonoBehaviour, IDropHandler
             botonGuardar.interactable = false;
             botonListado.interactable = false;
             botonMarcas.interactable = false;
+
+            menuContextualController.Cerrar();
         }
         else
         {
@@ -138,6 +140,8 @@ public class VisorController : MonoBehaviour, IDropHandler
             botonGuardar.interactable = true;
             botonListado.interactable = true;
             botonMarcas.interactable = true;
+
+            menuContextualController.Cerrar();
         }
     }
 
