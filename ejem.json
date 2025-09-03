@@ -1,0 +1,28 @@
+{
+  "id": "mapa-001",
+  "nombre": "Pueblo del Valle",
+  "image_file_id": "66cde830a9f2f23...",
+  "fecha_creacion": "2025-08-22T15:30:00Z",
+  "estados": [
+    {
+      "id": "estado-001",
+      "fecha_modificacion": "2025-08-22T16:00:00Z",
+      "comentarios": "Estado inicial tras análisis automático",
+      "objetos": [
+        {
+          "id": "obj-001",
+          "tipo": "puerta",
+          "grid_pos": { "fila": 3, "columna": 7 },
+          "estado": "activo"
+        },
+        {
+          "id": "obj-002",
+          "tipo": "cofre",
+          "grid_pos": { "fila": 5, "columna": 2 },
+          "estado": "oculto",
+          "detalles": { "contenido": "Llave de la torre" }
+        }
+      ]
+    }
+  ]
+}

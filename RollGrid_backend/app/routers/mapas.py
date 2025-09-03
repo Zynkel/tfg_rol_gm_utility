@@ -4,11 +4,11 @@ from fastapi.encoders import jsonable_encoder
 import tempfile
 import os
 from bson import ObjectId
-from typing import List
 from io import BytesIO
 import base64
 
-from app.services.procesador_mapa import analizar_objetos
+from app.models.mapa import EstadoMapa
+from app.services.map_processor import analizar_objetos
 from app.services.grid_utils import extraer_info_cuadricula
 from app.db.mongo_gridfs_backend import (
     guardar_mapa_con_datos,
@@ -16,7 +16,6 @@ from app.db.mongo_gridfs_backend import (
     actualizar_mapa,
     get_mongo_db,
 )
-from app.models.mapa import EstadoMapa, ObjetoEnMapa, Mapa
 
 router = APIRouter()
 
