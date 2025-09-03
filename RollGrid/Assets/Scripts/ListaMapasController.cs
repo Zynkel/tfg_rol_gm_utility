@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -183,7 +184,35 @@ public class ListaMapasController : MonoBehaviour
         }
     }
 
+    /**
+     * Obtiene el mapa y sus elementos del último mapa,
+     * llama a la API para obtener el mapa y muestra el mapa en el visor.
+     * 
+     * Esto se usa tras subir un mapa generado para mostrarlo en el visor analizado.
+     */
+    public IEnumerator CargarUltimoMapaSubido()
+    {
+        MapasNombres ultimoMapa = listaMapasNombres.mapas.LastOrDefault();
+        string idMapa = ultimoMapa.id;
+        string urlImagen = $"{apiUrlBase}mapas/{idMapa}";
 
+        using (UnityWebRequest www = UnityWebRequest.Get(urlImagen))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error cargando imagen: " + www.error);
+                yield break;
+            }
+
+            string json = www.downloadHandler.text;
+            MapaAPI mapa = JsonUtility.FromJson<MapaAPI>(json);
+
+            visorController.ProcesarMapaAPI(mapa);
+            OcultarPanel();
+        }
+    }
 
     public IEnumerator BorrarMapa(string id)
     {

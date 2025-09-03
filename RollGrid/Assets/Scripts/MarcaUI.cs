@@ -53,6 +53,8 @@ public class MarcaUI : MonoBehaviour, IPointerClickHandler
         filaAsociada.marcaUIAsociada = this;
         filaAsociada.icono.sprite = icono;
         filaAsociada.texto.text = nombre;
+
+        menuContextual.Cerrar();
     }
 
     public void OnPointerClick(PointerEventData eventData)

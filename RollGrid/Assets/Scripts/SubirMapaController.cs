@@ -5,30 +5,39 @@ using TMPro;
 using UnityEngine.Networking;
 using System.IO;
 using SFB;
+using System;
 
 public class SubirMapaController : MonoBehaviour
 {
     [Header("Controladores")]
     public ListaMapasController listadoMapasController;
+    public VisorController visorController;
 
     [Header("Componentes UI")]
     public GameObject panelNombreMapa;
     public TMP_InputField inputNombreMapa;
     public Button botonConfirmarNombre;
+    public Button botonCancelar;
 
     [Header("URL API")]
     public string apiUrl = "http://localhost:8000/mapas"; // URL de la APi
 
     private string rutaImagenSeleccionada;
+    private bool subidaMapaLocal = true;
 
     void Start()
     {
+        botonConfirmarNombre.onClick.RemoveAllListeners();
         botonConfirmarNombre.onClick.AddListener(OnConfirmarNombre);
+        botonCancelar.onClick.RemoveAllListeners();
+        botonCancelar.onClick.AddListener(OnCancelar);
     }
 
     // Llamado desde el botón en la UI
     public void OnBotonCargarMapaLocal()
     {
+        subidaMapaLocal = true;
+
         var extensiones = new[] {
             new ExtensionFilter("Imagenes", "png", "jpg", "jpeg")
         };
@@ -45,6 +54,14 @@ public class SubirMapaController : MonoBehaviour
         }
     }
 
+    // Llamado desde el botón del visor
+    public void OnBotonSubirMapaGenerado()
+    {
+        subidaMapaLocal = false;
+        panelNombreMapa.SetActive(true); // Mostrar panel para poner el nombre
+        inputNombreMapa.text = "";
+    }
+
     private void OnConfirmarNombre()
     {
         string nombreMapa = inputNombreMapa.text.Trim();
@@ -54,7 +71,21 @@ public class SubirMapaController : MonoBehaviour
             return;
         }
 
-        StartCoroutine(SubirMapa(nombreMapa, rutaImagenSeleccionada));        
+        //La subida de un mapa desde la máquina local
+        if (subidaMapaLocal)
+        {
+            StartCoroutine(SubirMapa(nombreMapa, rutaImagenSeleccionada));
+        }
+        else //Subida de mapa generado
+        {
+            StartCoroutine(visorController.SubirMapaGenerado(nombreMapa));
+        }
+    }
+
+    private void OnCancelar()
+    {
+        inputNombreMapa.text = "";
+        panelNombreMapa.SetActive(false);
     }
 
     private IEnumerator SubirMapa(string nombreMapa, string rutaImagen)

@@ -8,6 +8,8 @@ public class NavegadorController : MonoBehaviour
 {
     public RectTransform content; // El content del ScrollView
     public GameObject filaPrefab; // El prefab de la fila
+    public Button botonLimpiarFiltro;
+    
     public DetalleMarcaController panelDetalles;    
 
     private MarcaFilaUI filaSeleccionada;
@@ -45,6 +47,15 @@ public class NavegadorController : MonoBehaviour
 
     public void AplicarFiltro(FiltroNavegador filtro) 
     {
+        if (filtro.filtroAplicado)
+        {
+            botonLimpiarFiltro.gameObject.SetActive(true);
+        } 
+        else
+        {
+            botonLimpiarFiltro.gameObject.SetActive(false);
+        }
+
         string tipoSeleccionado = filtro.tipo.ToString().ToLower();
         string estadoSeleccionado = filtro.estado.ToString().ToLower();
         string nombreTexto = filtro.nombre.ToLower();

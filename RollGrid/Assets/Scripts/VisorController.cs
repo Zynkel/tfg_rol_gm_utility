@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Xml;
 using TMPro;
 using UnityEngine;
@@ -12,7 +13,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
-using static ListaMarcasUI;
+using static GeneracionMapaController;
 
 public class VisorController : MonoBehaviour, IDropHandler
 {
@@ -22,6 +23,9 @@ public class VisorController : MonoBehaviour, IDropHandler
     public MenuContextualController menuContextualController;
     public SeleccionarEstadoController seleccionarEstadoController;
     public GuardarEstadoController guardarEstadoUI;
+    public ListaMapasController listadoMapasController;
+    public GeneracionMapaController generacionMapaController;
+    public SubirMapaController subirMapaController;
     [SerializeField] private DetalleMarcaController panelDetalles; 
 
     [Header("Elementos UI")]
@@ -38,6 +42,8 @@ public class VisorController : MonoBehaviour, IDropHandler
     public Button botonListado;
     public Button botonGuardar;
     public Button botonCuadricular;
+    public Button botonGenerar;
+    [SerializeField] private TMP_Text guardarButtonText;
 
     //Objeto mapa actual.
     public MapaAPI mapaCargado;
@@ -48,6 +54,7 @@ public class VisorController : MonoBehaviour, IDropHandler
     public float zoomStep = 0.1f;
     public ScrollRect scrollRect;
 
+    public bool mapaGeneradoSinSubir = false;
     public bool permitirAñadirMarcas = true; 
     private bool arrastrandoConRueda = false;
     private Vector2 ultimaPosicionMouse;
@@ -131,6 +138,7 @@ public class VisorController : MonoBehaviour, IDropHandler
             botonGuardar.interactable = false;
             botonListado.interactable = false;
             botonMarcas.interactable = false;
+            botonGenerar.interactable = false;
 
             menuContextualController.Cerrar();
         }
@@ -140,6 +148,7 @@ public class VisorController : MonoBehaviour, IDropHandler
             botonGuardar.interactable = true;
             botonListado.interactable = true;
             botonMarcas.interactable = true;
+            botonGenerar.interactable = true;
 
             menuContextualController.Cerrar();
         }
@@ -246,6 +255,18 @@ public class VisorController : MonoBehaviour, IDropHandler
                 crearMarca(marcaItemUIDropped);
             }
         }        
+    }
+
+    public void OnBotonGuardar()
+    {
+        if (mapaGeneradoSinSubir)
+        {
+            subirMapaController.OnBotonSubirMapaGenerado();
+        } 
+        else
+        {
+            AbrirPanelGuardarEstado();
+        }
     }
 
     public void AbrirPanelGuardarEstado()
@@ -380,7 +401,8 @@ public class VisorController : MonoBehaviour, IDropHandler
                 navegadorManager.AnyadirMarca(marca.icono, marca.nombre, marcaGO);
 
             }
-        } else //Varios estados.
+        } 
+        else //Varios estados.
         {
             /**
              * Se muestra el panel con los estados del mapa a elegir y se carga el seleccionado.
@@ -391,62 +413,7 @@ public class VisorController : MonoBehaviour, IDropHandler
                 if (indiceSeleccionado.HasValue)
                 {
                     EstadoMapa estado = mapa.estados[indiceSeleccionado.Value];
-
-                    if (indiceSeleccionado > 0)
-                    {
-                        ColocarMarcasEnMapas(estado.objetos);
-                    } 
-                    else
-                    {
-                        foreach (ObjetoMapa obj in estado.objetos)
-                        {
-                            // Cargar solo si hay posición
-                            if (obj.posicion == null) continue;
-
-                            // Instanciar prefab de marca
-                            GameObject marcaGO = Instantiate(prefabMarcaColocada, contenedorMarcas);
-                            MarcaColocada marca = marcaGO.GetComponent<MarcaColocada>();
-
-                            // Determinar posición relativa en UI
-                            RectTransform rt = marcaGO.GetComponent<RectTransform>();
-                            float anchoMapa = mapaImagenCargada.texture.width;
-                            float altoMapa = mapaImagenCargada.texture.height;
-
-                            float xUI = (obj.posicion.x / anchoMapa) * mapaImagenCargada.rectTransform.rect.width;
-                            float yUI = (obj.posicion.y / altoMapa) * mapaImagenCargada.rectTransform.rect.height;
-
-                            // Ajuste para que (0,0) esté en la esquina inferior izquierda:
-                            Vector2 posicionLocal = new Vector2(xUI, yUI);
-                            Vector2 posicionOffset = posicionLocal - (mapaImagenCargada.rectTransform.rect.size / 2f);
-
-                            rt.anchoredPosition = posicionOffset;
-
-                            //Obtener TipoMarca
-                            if (Enum.TryParse<TipoMarca>(obj.tipo.ToLower(), out TipoMarca tipo))
-                            {
-                                Debug.Log($"Tipo válido: {tipo}"); // Ejemplo: "enemigo"
-                            }
-
-                            // Obtener el sprite según su tipo.
-                            Sprite icono = marcasManager.GetIconoPorTipo(tipo); // este método debe existir
-                            string nombre = obj.tipo;
-
-                            // Inicializar la marca
-                            marca.Inicializar(
-                                nombre,
-                                tipo,
-                                icono,
-                                marcasManager,
-                                menuContextualController,
-                                rt.anchoredPosition,
-                                prefabMarcaColocada.transform
-                            );
-
-                            //Crear fila en el navegador
-                            navegadorManager.AnyadirMarca(marca.icono, marca.nombre, marcaGO);
-
-                        }
-                    }                    
+                    ColocarMarcasEnMapas(estado.objetos, indiceSeleccionado == 0);
                 }
                 else
                 {
@@ -499,10 +466,16 @@ public class VisorController : MonoBehaviour, IDropHandler
             // Si se ha especificado un estado, cargarlo
             if (!string.IsNullOrEmpty(estadoId))
             {
+                bool esPrimerEstado = false;
+                if (mapa.estados[0].id == estadoId)
+                {
+                    esPrimerEstado = true;
+                }
+
                 EstadoMapa estado = mapa.estados.FirstOrDefault(e => e.id == estadoId);
                 if (estado != null)
-                {
-                    ColocarMarcasEnMapas(estado.objetos);
+                {                    
+                    ColocarMarcasEnMapas(estado.objetos, esPrimerEstado);
                 }
                 else
                 {
@@ -512,56 +485,110 @@ public class VisorController : MonoBehaviour, IDropHandler
         }
     }
 
-    private void ColocarMarcasEnMapas(List<ObjetoMapa> listaObjetos)
+    private void ColocarMarcasEnMapas(List<ObjetoMapa> listaObjetos, bool esPrimerEstado)
     {
         float anchoMapaUI = mapaImagenCargada.rectTransform.rect.width;
         float altoMapaUI = mapaImagenCargada.rectTransform.rect.height;
 
-        foreach (ObjetoMapa obj in listaObjetos)
+        if (esPrimerEstado)
         {
-            if (obj.posicion == null) continue;
-
-            GameObject marcaGO = Instantiate(prefabMarcaColocada, contenedorMarcas);
-            MarcaColocada marca = marcaGO.GetComponent<MarcaColocada>();
-
-            RectTransform rt = marcaGO.GetComponent<RectTransform>();
-
-            // Convertir coordenadas relativas (0-1) a posición en UI
-            float xUI = obj.posicion.x * anchoMapaUI;
-            float yUI = obj.posicion.y * altoMapaUI;
-
-            // Ajustar para que el origen (0,0) esté en el centro del mapa
-            Vector2 posicionOffset = new Vector2(
-                xUI - (anchoMapaUI / 2f),
-                yUI - (altoMapaUI / 2f)
-            );
-
-            rt.anchoredPosition = posicionOffset;
-
-            // Obtener tipo de marca
-            TipoMarca tipo = TipoMarca.objeto;
-            if (Enum.TryParse<TipoMarca>(obj.tipo, true, out var tipoParseado))
+            foreach (ObjetoMapa obj in listaObjetos)
             {
-                tipo = tipoParseado;
+                // Cargar solo si hay posición
+                if (obj.posicion == null) continue;
+
+                // Instanciar prefab de marca
+                GameObject marcaGO = Instantiate(prefabMarcaColocada, contenedorMarcas);
+                MarcaColocada marca = marcaGO.GetComponent<MarcaColocada>();
+
+                // Determinar posición relativa en UI
+                RectTransform rt = marcaGO.GetComponent<RectTransform>();
+                float anchoMapa = mapaImagenCargada.texture.width;
+                float altoMapa = mapaImagenCargada.texture.height;
+
+                float xUI = (obj.posicion.x / anchoMapa) * mapaImagenCargada.rectTransform.rect.width;
+                float yUI = (obj.posicion.y / altoMapa) * mapaImagenCargada.rectTransform.rect.height;
+
+                // Ajuste para que (0,0) esté en la esquina inferior izquierda:
+                Vector2 posicionLocal = new Vector2(xUI, yUI);
+                Vector2 posicionOffset = posicionLocal - (mapaImagenCargada.rectTransform.rect.size / 2f);
+
+                rt.anchoredPosition = posicionOffset;
+
+                //Obtener TipoMarca
+                if (Enum.TryParse<TipoMarca>(obj.tipo.ToLower(), out TipoMarca tipo))
+                {
+                    Debug.Log($"Tipo válido: {tipo}"); // Ejemplo: "enemigo"
+                }
+
+                // Obtener el sprite según su tipo.
+                Sprite icono = marcasManager.GetIconoPorTipo(tipo); // este método debe existir
+                string nombre = obj.tipo;
+
+                // Inicializar la marca
+                marca.Inicializar(
+                    nombre,
+                    tipo,
+                    icono,
+                    marcasManager,
+                    menuContextualController,
+                    rt.anchoredPosition,
+                    prefabMarcaColocada.transform
+                );
+
+                //Crear fila en el navegador
+                navegadorManager.AnyadirMarca(marca.icono, marca.nombre, marcaGO);
+
             }
+        } 
+        else
+        {
+            foreach (ObjetoMapa obj in listaObjetos)
+            {
+                if (obj.posicion == null) continue;
 
-            // Obtener sprite del tipo
-            Sprite icono = marcasManager.GetIconoPorTipo(tipo);
+                GameObject marcaGO = Instantiate(prefabMarcaColocada, contenedorMarcas);
+                MarcaColocada marca = marcaGO.GetComponent<MarcaColocada>();
 
-            // Inicializar marca
-            marca.Inicializar(
-                obj.tipo,
-                tipo,
-                icono,
-                marcasManager,
-                menuContextualController,
-                rt.anchoredPosition,
-                prefabMarcaColocada.transform
-            );
+                RectTransform rt = marcaGO.GetComponent<RectTransform>();
 
-            // Añadir al navegador
-            navegadorManager.AnyadirMarca(marca.icono, marca.nombre, marcaGO);
-        }
+                // Convertir coordenadas relativas (0-1) a posición en UI
+                float xUI = obj.posicion.x * anchoMapaUI;
+                float yUI = obj.posicion.y * altoMapaUI;
+
+                // Ajustar para que el origen (0,0) esté en el centro del mapa
+                Vector2 posicionOffset = new Vector2(
+                    xUI - (anchoMapaUI / 2f),
+                    yUI - (altoMapaUI / 2f)
+                );
+
+                rt.anchoredPosition = posicionOffset;
+
+                // Obtener tipo de marca
+                TipoMarca tipo = TipoMarca.objeto;
+                if (Enum.TryParse<TipoMarca>(obj.tipo, true, out var tipoParseado))
+                {
+                    tipo = tipoParseado;
+                }
+
+                // Obtener sprite del tipo
+                Sprite icono = marcasManager.GetIconoPorTipo(tipo);
+
+                // Inicializar marca
+                marca.Inicializar(
+                    obj.tipo,
+                    tipo,
+                    icono,
+                    marcasManager,
+                    menuContextualController,
+                    rt.anchoredPosition,
+                    prefabMarcaColocada.transform
+                );
+
+                // Añadir al navegador
+                navegadorManager.AnyadirMarca(marca.icono, marca.nombre, marcaGO);
+            }
+        }            
     }
 
     public void GuardarEstadoDesdeUI(MapaAPI mapa, string nombreEstado)
@@ -593,6 +620,41 @@ public class VisorController : MonoBehaviour, IDropHandler
         {
             Debug.LogError($"Error al guardar estado: {request.responseCode} - {request.downloadHandler.text}");
         }
+    }
+
+    public IEnumerator SubirMapaGenerado(string nombreMapa)
+    {
+        Texture2D textura = (Texture2D)mapaImagenCargada.texture;
+        byte[] imagenBytes = ConvertirTexturaABytes(textura);
+
+        WWWForm form = new WWWForm();
+        form.AddField("nombre", nombreMapa);
+        form.AddBinaryData("imagen", imagenBytes, nombreMapa + ".png", "image/png");
+
+        string url = "https://TU_API/subirMapa";
+        UnityWebRequest www = UnityWebRequest.Post(url, form);
+
+        yield return www.SendWebRequest();
+
+        if (www.result == UnityWebRequest.Result.Success)
+        {
+            mapaGeneradoSinSubir = false;
+            manejarBotonesMapaGeneradoSinSubir();
+            Debug.Log("Mapa generado subido correctamente");
+            // Aquí puedes refrescar el listado de mapas
+            StartCoroutine(listadoMapasController.ObtenerListadoMapas());
+            StartCoroutine(listadoMapasController.CargarUltimoMapaSubido());
+        }
+        else
+        {
+            Debug.LogError("Error al subir mapa generado: " + www.error);
+        }
+    }
+
+    private byte[] ConvertirTexturaABytes(Texture2D textura)
+    {
+        // Codificar a PNG (también puede ser JPG si prefieres)
+        return textura.EncodeToPNG();
     }
 
     private EstadoMapa CrearEstadoDesdeVisor(string nombreEstado)
@@ -650,6 +712,72 @@ public class VisorController : MonoBehaviour, IDropHandler
     public Boolean hayMapaCargado()
     {
         return mapaImagenCargada != null;
+    }
+
+    /**
+     * Genera el mapa con el prompt introducido.
+     */
+    public IEnumerator GenerarMapaDesdePrompt(MapaGenerador bodyGeneracion)
+    {       
+
+        string jsonBody = JsonUtility.ToJson(bodyGeneracion);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
+
+        // URL de tu API
+        string url = $"{apiUrlBase}maps/generate-image";
+
+        UnityWebRequest www = new UnityWebRequest(url, "POST");
+        www.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        www.downloadHandler = new DownloadHandlerBuffer();
+        www.SetRequestHeader("Content-Type", "application/json");
+        www.timeout = 60; 
+
+        // Enviar petición
+        yield return www.SendWebRequest();
+
+        if (www.result == UnityWebRequest.Result.Success)
+        {
+            // Deserializar la respuesta
+            RespuestaGeneracionMapa respuesta = JsonUtility.FromJson<RespuestaGeneracionMapa>(www.downloadHandler.text);
+
+            // Convertir la imagen base64 a textura
+            byte[] imageData = System.Convert.FromBase64String(respuesta.image_base64);
+            Texture2D textura = new Texture2D(2, 2);
+            textura.LoadImage(imageData);
+
+            // Asignar la textura al visor
+            mapaImagenCargada.texture = textura;
+            mapaGeneradoSinSubir = true;
+
+            //Se limpian marcas de un posible mapa anterior.
+            LimpiarMarcas();
+            manejarBotonesMapaGeneradoSinSubir();
+
+            //Se cierra el panel de generación.
+            generacionMapaController.CerrarPanel();
+
+            Debug.Log("Mapa generado correctamente a partir del prompt.");
+        }
+        else
+        {
+            Debug.LogError("Error generando mapa: " + www.error);
+        }
+    }
+
+    //Se bloquea el botón de marcas y el desplegable de modo, no se podrá salir del modo edición.
+    private void manejarBotonesMapaGeneradoSinSubir()
+    {
+        modoAplicacionDropdown.interactable = !mapaGeneradoSinSubir;
+        botonMarcas.interactable = !mapaGeneradoSinSubir;
+        
+        if (mapaGeneradoSinSubir)
+        {
+            guardarButtonText.text = "Subir";
+        } 
+        else
+        {
+            guardarButtonText.text = "Guardar";
+        }
     }
 
     /**

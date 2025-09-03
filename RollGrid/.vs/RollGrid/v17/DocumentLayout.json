@@ -3,20 +3,64 @@
   "WorkspaceRootPath": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|c:\\users\\migue\\documents\\lenguajes y tecnologias\\tfg\\tfg_rol_gm_utility\\rollgrid\\assets\\scripts\\visorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\visorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\marcaui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\marcaui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\marcacolocada.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\marcacolocada.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\mapafilaitemui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\mapafilaitemui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\menucontextualcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\menucontextualcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\detallemarcacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\detallemarcacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\menucontextualcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\menucontextualcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|c:\\users\\migue\\documents\\lenguajes y tecnologias\\tfg\\tfg_rol_gm_utility\\rollgrid\\assets\\scripts\\visorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\visorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\filtronavegadorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\filtronavegadorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\navegadorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\navegadorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\subirmapacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\subirmapacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\generacionmapacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\generacionmapacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\chunkeddownloadhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\chunkeddownloadhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\listamapascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\listamapascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\guardarestadocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\guardarestadocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\seleccionarestadocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\seleccionarestadocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\mapaapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\mapaapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\marcacolocada.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\marcacolocada.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\modoaplicacioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -29,22 +73,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\vinculacioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\vinculacioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\listamapascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\listamapascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\mapaapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\mapaapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\marcaui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\marcaui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\mapafilaitemui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\mapafilaitemui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\uidraghandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -63,26 +91,6 @@
       "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\marcasmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\navegadorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\navegadorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\subirmapacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\subirmapacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\seleccionarestadocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\seleccionarestadocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\guardarestadocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\guardarestadocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\filtronavegadorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\filtronavegadorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\assets\\scripts\\gridoverlay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DE7E341B-ABFB-731B-CC99-AE892AC7AD77}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\gridoverlay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -94,11 +102,36 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 13,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 9,
+              "Title": "ChunkedDownloadHandler.cs",
+              "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\ChunkedDownloadHandler.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\ChunkedDownloadHandler.cs",
+              "ToolTip": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\ChunkedDownloadHandler.cs",
+              "RelativeToolTip": "Assets\\Scripts\\ChunkedDownloadHandler.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAUwBcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-30T11:26:26.901Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "GeneracionMapaController.cs",
+              "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\GeneracionMapaController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\GeneracionMapaController.cs",
+              "ToolTip": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\GeneracionMapaController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\GeneracionMapaController.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAgwC8AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-22T09:33:48.505Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
               "Title": "UIDragHandler.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\UIDragHandler.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\UIDragHandler.cs",
@@ -110,7 +143,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 15,
               "Title": "ModoAplicacionController.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\ModoAplicacionController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\ModoAplicacionController.cs",
@@ -122,55 +155,56 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 7,
               "Title": "SubirMapaController.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\SubirMapaController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\SubirMapaController.cs",
               "ToolTip": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\SubirMapaController.cs",
               "RelativeToolTip": "Assets\\Scripts\\SubirMapaController.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAQwCsAAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAADwAAAAAAAAAAAASwEoAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-09T09:03:40.339Z"
+              "WhenOpened": "2025-08-09T09:03:40.339Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 12,
               "Title": "SeleccionarEstadoController.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\SeleccionarEstadoController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\SeleccionarEstadoController.cs",
               "ToolTip": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\SeleccionarEstadoController.cs",
               "RelativeToolTip": "Assets\\Scripts\\SeleccionarEstadoController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAewBYAAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-02T15:43:50.443Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 13,
               "Title": "MapaAPI.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\MapaAPI.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\MapaAPI.cs",
               "ToolTip": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\MapaAPI.cs",
               "RelativeToolTip": "Assets\\Scripts\\MapaAPI.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAADwvyAAAAAcAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-29T14:05:25.142Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 11,
               "Title": "GuardarEstadoController.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\GuardarEstadoController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\GuardarEstadoController.cs",
               "ToolTip": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\GuardarEstadoController.cs",
               "RelativeToolTip": "Assets\\Scripts\\GuardarEstadoController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAgAAAAAAAAAA==",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAQwA4AAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-02T09:58:57.226Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 22,
               "Title": "GridOverlay.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\GridOverlay.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\GridOverlay.cs",
@@ -182,20 +216,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "VisorController.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\VisorController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\VisorController.cs",
               "ToolTip": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\VisorController.cs",
               "RelativeToolTip": "Assets\\Scripts\\VisorController.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAhwA8AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAJABAAAAAAAAAAAhwJwBAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-26T10:22:40.222Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 14,
               "Title": "MarcaColocada.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\MarcaColocada.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\MarcaColocada.cs",
@@ -207,19 +241,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "MenuContextualController.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\MenuContextualController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\MenuContextualController.cs",
               "ToolTip": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\MenuContextualController.cs",
               "RelativeToolTip": "Assets\\Scripts\\MenuContextualController.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAUwBcAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAFMAAAAAAAAAAAAAAIIAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-20T11:05:18.872Z"
+              "WhenOpened": "2025-07-20T11:05:18.872Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 17,
               "Title": "VinculacionController.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\VinculacionController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\VinculacionController.cs",
@@ -231,43 +266,45 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 0,
               "Title": "MarcaUI.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\MarcaUI.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\MarcaUI.cs",
               "ToolTip": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\MarcaUI.cs",
               "RelativeToolTip": "Assets\\Scripts\\MarcaUI.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAiwC0AAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAACUAAAAAAAAAAADgvzgAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-08T11:02:00.102Z"
+              "WhenOpened": "2025-06-08T11:02:00.102Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 10,
               "Title": "ListaMapasController.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\ListaMapasController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\ListaMapasController.cs",
               "ToolTip": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\ListaMapasController.cs",
               "RelativeToolTip": "Assets\\Scripts\\ListaMapasController.cs",
-              "ViewState": "AgIAAJ0AAAAAAAAAAAAswK8AAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAMgAAAAAAAAAAAAhwNgAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-07T15:39:04.811Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 1,
               "Title": "MapaFilaItemUI.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\MapaFilaItemUI.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\MapaFilaItemUI.cs",
               "ToolTip": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\MapaFilaItemUI.cs",
               "RelativeToolTip": "Assets\\Scripts\\MapaFilaItemUI.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAjwCMAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAABMAAAAAAAAAAAAAACMAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-07T15:37:40.333Z"
+              "WhenOpened": "2025-06-07T15:37:40.333Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 19,
               "Title": "ListaMarcasController.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\ListaMarcasController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\ListaMarcasController.cs",
@@ -279,19 +316,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 5,
               "Title": "FiltroNavegadorController.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\FiltroNavegadorController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\FiltroNavegadorController.cs",
               "ToolTip": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\FiltroNavegadorController.cs",
               "RelativeToolTip": "Assets\\Scripts\\FiltroNavegadorController.cs",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAowDAAAAApAAAAAAAAAA==",
+              "ViewState": "AgIAACEAAAAAAAAAAADgvy4AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-27T10:46:15.351Z"
+              "WhenOpened": "2025-05-27T10:46:15.351Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 16,
               "Title": "MarcaFilaUI.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\MarcaFilaUI.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\MarcaFilaUI.cs",
@@ -303,31 +341,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 6,
               "Title": "NavegadorController.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\NavegadorController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\NavegadorController.cs",
               "ToolTip": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\NavegadorController.cs",
               "RelativeToolTip": "Assets\\Scripts\\NavegadorController.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAswCoAAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAACQAAAAAAAAAAADgvzEAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-27T10:43:02.062Z"
+              "WhenOpened": "2025-05-27T10:43:02.062Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "DetalleMarcaController.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\DetalleMarcaController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\DetalleMarcaController.cs",
               "ToolTip": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\DetalleMarcaController.cs",
               "RelativeToolTip": "Assets\\Scripts\\DetalleMarcaController.cs",
-              "ViewState": "AgIAADwAAAAAAAAAAAAowEAAAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAAEoAAAAAAAAAAAAqwGIAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-26T10:31:02.327Z"
+              "WhenOpened": "2025-05-26T10:31:02.327Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 20,
               "Title": "MarcaItemUI.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\MarcaItemUI.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\MarcaItemUI.cs",
@@ -339,7 +379,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 21,
               "Title": "MarcasManager.cs",
               "DocumentMoniker": "C:\\Users\\migue\\Documents\\Lenguajes y tecnologias\\TFG\\tfg_rol_gm_utility\\RollGrid\\Assets\\Scripts\\MarcasManager.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\MarcasManager.cs",

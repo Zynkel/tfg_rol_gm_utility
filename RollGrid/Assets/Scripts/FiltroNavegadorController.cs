@@ -6,19 +6,21 @@ using UnityEngine.UI;
 
 public class FiltroNavegadorController : MonoBehaviour
 {
-    public GameObject panel; // Asigna el panel en el Inspector
+    public GameObject panel; // Asigna el panel en el Inspector    
 
     public class FiltroNavegador
     {
         public string nombre;        
         public string tipo;
         public string estado;
+        public bool filtroAplicado;
 
-        public FiltroNavegador(string nombre, string tipo, string estado)
+        public FiltroNavegador(string nombre, string tipo, string estado, bool filtrado)
         {
             this.nombre = nombre;
             this.tipo = tipo;
             this.estado = estado;
+            filtroAplicado = filtrado;
         }
     }
 
@@ -45,9 +47,35 @@ public class FiltroNavegadorController : MonoBehaviour
         string nombre = inputNombre.text;
         string tipoFiltro = dropdownTipo.options[dropdownTipo.value].text;
         string estadoFiltro = dropdownEstado.options[dropdownEstado.value].text;
-        FiltroNavegador filtro = new FiltroNavegador(nombre, tipoFiltro, estadoFiltro);
+        bool filtroAplicado = false;
+
+        /**
+         * Se comprueba si se aplica algún filtro, en ese caso se indica para mostrar el botón de limpiar.
+         */
+        if (!string.IsNullOrEmpty(nombre) || !string.IsNullOrEmpty(tipoFiltro) || !string.IsNullOrEmpty(estadoFiltro))
+        {
+            filtroAplicado = true;
+        }
+
+        FiltroNavegador filtro = new FiltroNavegador(nombre, tipoFiltro, estadoFiltro, filtroAplicado);
         navegadorController.AplicarFiltro(filtro);
         SalirFiltros();
+    }
+
+    public void LimpiarFiltro()
+    {
+        string nombre = "";
+        string tipoFiltro = "Todos";
+        string estadoFiltro = "Todos";
+
+        inputNombre.text = "";
+        dropdownTipo.value = 0;
+        dropdownTipo.RefreshShownValue();
+        dropdownEstado.value = 0;
+        dropdownEstado.RefreshShownValue();
+
+        FiltroNavegador filtro = new FiltroNavegador(nombre, tipoFiltro, estadoFiltro, false);
+        navegadorController.AplicarFiltro(filtro);
     }
 
     public void SalirFiltros()
