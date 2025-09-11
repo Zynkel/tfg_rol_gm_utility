@@ -10,11 +10,49 @@ public class NavegadorController : MonoBehaviour
     public GameObject filaPrefab; // El prefab de la fila
     public Button botonLimpiarFiltro;
     
-    public DetalleMarcaController panelDetalles;    
+    public DetalleMarcaController panelDetalles;
+    public List<MarcaFilaUI> listaFilasNavegador = new List<MarcaFilaUI>();
 
     private MarcaFilaUI filaSeleccionada;
-    private List<MarcaFilaUI> listaFilasNavegador = new List<MarcaFilaUI>();
 
+    private void Start()
+    {
+        if (ModoAplicacionController.Instancia != null)
+        {
+            ModoAplicacionController.Instancia.OnModoCambiado += OnModoCambiado;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (ModoAplicacionController.Instancia != null)
+        {
+            ModoAplicacionController.Instancia.OnModoCambiado -= OnModoCambiado;
+        }
+    }
+
+    private void OnModoCambiado(ModoAplicacion nuevoModo)
+    {
+        bool esJuego = nuevoModo == ModoAplicacion.Juego;
+
+        foreach (var fila in listaFilasNavegador)
+        {
+            if (fila == null || fila.marcaUIAsociada == null) continue;
+
+            var estado = fila.marcaUIAsociada.estado;
+
+            if (esJuego)
+            {
+                // En juego, ocultar marcas con estado Oculto
+                fila.gameObject.SetActive(estado != EstadoMarca.Oculto);
+            }
+            else
+            {
+                // En edición, siempre se muestran todas
+                fila.gameObject.SetActive(true);
+            }
+        }
+    }
 
     public void AnyadirMarca(Sprite icono, string nombre, GameObject marcaMapa)
     {
@@ -27,11 +65,7 @@ public class NavegadorController : MonoBehaviour
 
         listaFilasNavegador.Add(filaUI);
 
-        /*
-         * Esto fuerza a Unity a recalcular el layout de la tabla para evitar que la primera fila salga 
-         * entrecortada se recalcula el layout para colocarla correctamente. 
-         */
-        LayoutRebuilder.ForceRebuildLayoutImmediate(content);
+        forzarRefrescoNavegador();
     }
 
     public void FilaSeleccionada(MarcaFilaUI nuevaFila)
@@ -73,5 +107,14 @@ public class NavegadorController : MonoBehaviour
             marcaFilaActual.gameObject.SetActive(coincideNombre && coincideEstado && coincideTipo);
             fila.gameObject.SetActive(coincideNombre && coincideEstado && coincideTipo);            
         }
+    }
+
+    public void forzarRefrescoNavegador()
+    {
+        /*
+         * Esto fuerza a Unity a recalcular el layout de la tabla para evitar que la primera fila salga 
+         * entrecortada se recalcula el layout para colocarla correctamente. 
+         */
+        LayoutRebuilder.ForceRebuildLayoutImmediate(content);
     }
 }

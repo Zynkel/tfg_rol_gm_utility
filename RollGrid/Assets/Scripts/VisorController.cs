@@ -121,11 +121,12 @@ public class VisorController : MonoBehaviour, IDropHandler
                 {
                     MarcaUI marcaActualUI = marca.GetComponent<MarcaUI>();
                     bool mostrar = marcaActualUI.estado == EstadoMarca.Activo || marcaActualUI.estado == EstadoMarca.Inactivo;
-                    marca.ActualizarEstiloVisual();
+                    marca.ActualizarEstiloVisual(esJuego);
                     marca.gameObject.SetActive(mostrar);
                 }
                 else
                 {
+                    marca.ActualizarEstiloVisual(esJuego);
                     marca.gameObject.SetActive(true);
                 }
             }

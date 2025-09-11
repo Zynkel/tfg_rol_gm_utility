@@ -49,9 +49,9 @@ public class MarcaColocada : MonoBehaviour
         marcaUI.Inicializar(nombre, tipo, icono, marcasManager, menuContextual);
     }
 
-    public void ActualizarEstiloVisual()
+    public void ActualizarEstiloVisual(bool esJuego)
     {
-        if (marcaUI.estado == EstadoMarca.Inactivo)
+        if (esJuego && marcaUI.estado == EstadoMarca.Inactivo)
         {
             canvasGroup.alpha = 0.7f; // más transparente
         }

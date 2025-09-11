@@ -46,9 +46,9 @@ public class MarcaFilaUI : MonoBehaviour
         }
     }
 
-    public void ActualizarEstiloVisual()
+    public void ActualizarEstiloVisual(bool esJuego)
     {
-        if (marcaUIAsociada != null && marcaUIAsociada.estado == EstadoMarca.Inactivo)
+        if (esJuego && marcaUIAsociada != null && marcaUIAsociada.estado == EstadoMarca.Inactivo)
         {
             canvasGroup.alpha = 0.7f;
         }
@@ -72,11 +72,11 @@ public class MarcaFilaUI : MonoBehaviour
         if (marcaAsociada != null)
         {
             bool mostrar = !esJuego || (marcaUIAsociada.estado == EstadoMarca.Activo || marcaUIAsociada.estado == EstadoMarca.Inactivo);
-            gameObject.SetActive(mostrar);
+            this.gameObject.SetActive(mostrar);
         }
 
         // Aplicar estilo grisado si está inactiva
-        ActualizarEstiloVisual();
+        ActualizarEstiloVisual(esJuego);
     }
 
     public void Configurar(Sprite sprite, string nombre, GameObject marca, DetalleMarcaController detalles, NavegadorController navController, MarcaUI marcaUI)
@@ -147,7 +147,7 @@ public class MarcaFilaUI : MonoBehaviour
     }
 
     public void EliminarMarca()
-    {
+    {        
         // Limpia el objeto seleccionado si es este mismo
         if (EventSystem.current.currentSelectedGameObject == this.gameObject)
         {
@@ -172,6 +172,12 @@ public class MarcaFilaUI : MonoBehaviour
         {
             Destroy(marcaAsociada);
             marcaAsociada = null;
+        }
+
+        //Elimina la fila del listado
+        if (navegadorController.listaFilasNavegador.Contains(this))
+        {
+            navegadorController.listaFilasNavegador.Remove(this);
         }
 
         // Luego destruye esta fila del navegador
