@@ -1,11 +1,11 @@
 
-# 🧭 Manual de Instalación y Uso del Backend de Análisis de Mapas con Cuadrícula – RollGrid
+#  Manual de Instalación y Uso del Backend de Análisis de Mapas con Cuadrícula – RollGrid
 
 Este backend permite subir mapas de rol en imagen, analizarlos con inteligencia artificial (Detectron2 + Mask R-CNN), detectar objetos como cofres, puertas, escaleras, mesas y más, y almacenar todo en MongoDB. Está pensado para integrarse con una aplicación como Unity para gestionar sesiones de partidas.
 
 ---
 
-## ✅ Requisitos del sistema
+## Requisitos del sistema
 
 - Python 3.11 o superior
 - MongoDB instalado localmente y ejecutándose en `localhost:27017`
@@ -15,7 +15,7 @@ Este backend permite subir mapas de rol en imagen, analizarlos con inteligencia 
 
 ---
 
-## 🔧 Instalación paso a paso
+## Instalación paso a paso
 
 ### 1. Clona o descarga el proyecto (recomendado con Git LFS)
 
@@ -46,7 +46,7 @@ Verifica que el archivo `models/mask_rcnn_model.pth` esté descargado. Si no se 
 git lfs pull
 ```
 
-> ⚠️ Si descargas el proyecto como `.zip`, el modelo **no estará incluido**. Debes usar `git clone` con Git LFS.
+> Si descargas el proyecto como `.zip`, el modelo **no estará incluido**. Debes usar `git clone` con Git LFS.
 
 ---
 
@@ -82,7 +82,7 @@ pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https
 pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu118
 ```
 
-> 🔎 Verifica si tienes CUDA disponible con este código:
+> Verifica si tienes CUDA disponible con este código:
 
 ```python
 import torch
@@ -108,7 +108,7 @@ pip install -r requirements.txt
 
 ---
 
-## ▶️ Ejecutar el servidor backend
+## Ejecutar el servidor backend
 
 Desde la carpeta `RollGrid_backend`:
 
@@ -124,7 +124,7 @@ http://localhost:8000/docs
 
 ---
 
-## 📂 Estructura de carpetas relevante
+## Estructura de carpetas relevante
 
 ```
 RollGrid_backend/
@@ -141,7 +141,7 @@ RollGrid_backend/
 
 ---
 
-## 🔌 Endpoints disponibles (en `/docs`)
+## Endpoints disponibles (en `/docs`)
 
 - `POST /mapas`: Sube una imagen y analiza con IA
 - `GET /mapas`: Lista de mapas
@@ -156,7 +156,7 @@ RollGrid_backend/
 
 ---
 
-## 🧱 Estructura de un JSON de mapa (ejemplo)
+## Estructura de un JSON de mapa (ejemplo)
 
 ```json
 {
@@ -188,7 +188,7 @@ RollGrid_backend/
 
 ---
 
-## 📘 Notas finales
+## Notas finales
 
 - Las imágenes se eliminan de la carpeta `temp/` tras procesarlas.
 - Toda la información se almacena en MongoDB (colección `mapas` y `fs.*`).

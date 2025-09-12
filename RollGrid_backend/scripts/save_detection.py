@@ -2,8 +2,8 @@ import argparse, json, os
 from typing import List, Dict, Any, Optional
 import cv2, numpy as np, tkinter as tk
 from tkinter import filedialog
-
 import sys, pathlib
+
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 os.chdir(ROOT)
 if str(ROOT) not in sys.path:
@@ -12,17 +12,13 @@ if str(ROOT) not in sys.path:
 from app.services.grid_utils import extraer_info_cuadricula
 from app.services.map_processor import analizar_objetos
 
-
-
-
-
 def draw_title_strip(img: np.ndarray, title: str, height: int = 36) -> np.ndarray:
     h, w = img.shape[:2]
     strip = np.full((height, w, 3), 245, dtype=np.uint8)
     cv2.putText(strip, title, (12, height - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (50, 50, 50), 2, cv2.LINE_AA)
     return np.vstack([strip, img])
 
-def overlay_grid(image_bgr: np.ndarray, grid: Dict[str, Any], color=(0, 0, 225)) -> np.ndarray:
+def overlay_grid(image_bgr: np.ndarray, grid: Dict[str, Any], color=(0, 165, 255)) -> np.ndarray:
     img = image_bgr.copy()
     origin = grid.get("origin") or grid.get("origen") or [0, 0]
     cell = grid.get("cell_size") or grid.get("cellSize") or [32, 32]
@@ -96,7 +92,6 @@ def pick_dir() -> Optional[str]:
 def run_pipeline(image_path: str, output_path: str, grid_json: Optional[str], dets_json: Optional[str], grid_img: Optional[str], objects_img: Optional[str]) -> Dict[str, Any]:
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
     orig = load_image(image_path)
-
     if grid_img:
         cuads = load_image(grid_img)
         grid_info = {}
@@ -106,18 +101,14 @@ def run_pipeline(image_path: str, output_path: str, grid_json: Optional[str], de
                 grid = json.load(f)
         else:
             grid = extraer_info_cuadricula(image_path)
-
         if not grid:
             raise RuntimeError("No se pudo detectar la cuadrícula")
-
         if "origin" not in grid and "origen" not in grid:
             grid["origin"] = [int(grid["offsetX"]), int(grid["offsetY"])]
         if "cell_size" not in grid and "cellSize" not in grid:
             grid["cell_size"] = [int(grid["cellWidth"]), int(grid["cellHeight"])]
-
         cuads = overlay_grid(orig, grid)
         grid_info = grid
-
     if objects_img:
         objs = load_image(objects_img)
         detections = []
@@ -128,16 +119,17 @@ def run_pipeline(image_path: str, output_path: str, grid_json: Optional[str], de
         else:
             detections = analizar_objetos(image_path) or []
         objs = overlay_detections(orig, detections)
-
-    p1 = draw_title_strip(orig.copy(), "Original")
-    p2 = draw_title_strip(cuads, "Rejilla")
-    p3 = draw_title_strip(objs, "Objetos")
-    panel = hstack_equal_height([p1, p2, p3], pad=12)
-    cv2.imwrite(output_path, panel)
-
+    base_name, _ = os.path.splitext(output_path)
+    grid_out = f"{base_name}_rejilla.png"
+    objects_out = f"{base_name}_objetos.png"
+    cv2.imwrite(grid_out, draw_title_strip(cuads, "Rejilla"))
+    cv2.imwrite(objects_out, draw_title_strip(objs, "Objetos"))
     return {
         "image": image_path,
-        "output": output_path,
+        "outputs": {
+            "grid_image": grid_out,
+            "objects_image": objects_out
+        },
         "grid_summary": {
             "origin": (grid_info.get("origin") or grid_info.get("origen")) if grid_info else None,
             "cell_size": (grid_info.get("cell_size") or grid_info.get("cellSize")) if grid_info else None,
@@ -158,12 +150,10 @@ def main():
     parser.add_argument("--grid-img", default=None)
     parser.add_argument("--objects-img", default=None)
     args = parser.parse_args()
-
     image_path = args.image or pick_image()
     if not image_path:
         print(json.dumps({"error": "No se seleccionó imagen"}, ensure_ascii=False))
         return
-
     output_path = args.output
     if not output_path:
         out_dir = pick_dir()
@@ -172,7 +162,6 @@ def main():
             return
         name, _ = os.path.splitext(os.path.basename(image_path))
         output_path = os.path.join(out_dir, f"{name}_resumen.png")
-
     info = run_pipeline(
         image_path,
         output_path,
