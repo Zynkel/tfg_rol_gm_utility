@@ -316,6 +316,8 @@ public class VisorController : MonoBehaviour, IDropHandler
 
             Destroy(marca.gameObject);
         }
+
+        navegadorManager.listaFilasNavegador.Clear();
     }   
 
     /**
@@ -630,9 +632,9 @@ public class VisorController : MonoBehaviour, IDropHandler
 
         WWWForm form = new WWWForm();
         form.AddField("nombre", nombreMapa);
-        form.AddBinaryData("imagen", imagenBytes, nombreMapa + ".png", "image/png");
+        form.AddBinaryData("file", imagenBytes, nombreMapa + ".png", "image/png");
 
-        string url = "https://TU_API/subirMapa";
+        string url = "http://localhost:8000/mapas";
         UnityWebRequest www = UnityWebRequest.Post(url, form);
 
         yield return www.SendWebRequest();
@@ -642,9 +644,9 @@ public class VisorController : MonoBehaviour, IDropHandler
             mapaGeneradoSinSubir = false;
             manejarBotonesMapaGeneradoSinSubir();
             Debug.Log("Mapa generado subido correctamente");
-            // Aquí puedes refrescar el listado de mapas
-            StartCoroutine(listadoMapasController.ObtenerListadoMapas());
-            StartCoroutine(listadoMapasController.CargarUltimoMapaSubido());
+
+            yield return StartCoroutine(listadoMapasController.ObtenerListadoMapas());
+            yield return StartCoroutine(listadoMapasController.CargarUltimoMapaSubido());
         }
         else
         {
@@ -724,7 +726,7 @@ public class VisorController : MonoBehaviour, IDropHandler
         string jsonBody = JsonUtility.ToJson(bodyGeneracion);
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
 
-        // URL de tu API
+        
         string url = $"{apiUrlBase}maps/generate-image";
 
         UnityWebRequest www = new UnityWebRequest(url, "POST");
